@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Alinha os itens no topo */
+}
+
+canvas {
+    border: 1px solid #000;
+    margin-right: 10px; /* Adiciona margem à direita do canvas */
+    background-color: #8c92ac;
+    cursor: crosshair;
+    /* #ECEBE9; */
+  }
+
+button {
+  cursor: pointer;
+}
+
+#controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+}
+
+#triangleTableContainer {
+    align-items: flex-start;
+    background-color: #8c92ac;
+    overflow-y: auto; /* Adiciona scrollbar vertical quando necessário */
+    border: 1px solid #000;
+    width: 400px; /* Define uma largura fixa para a tabela */
+    height: 600px; /* Define uma altura fixa para a tabela */
+    margin-bottom: 10px; /* Adiciona margem inferior à tabela */
+  }
+  #triangleTable {
+    width: 100%; /* Largura agora é 100% do contêiner */
+  }
+/* Estilo para o modo noturno */
+body.dark-mode {
+    background-color: #151626; /* Cor de fundo escura */
+    color: #ffffff; /* Cor do texto clara */
+}
