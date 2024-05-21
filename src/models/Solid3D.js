@@ -1,4 +1,5 @@
-import Poly from "./Poly.js";
+import Poly  from "./Poly.js";
+import Vertex from "./Vertex.js";
 export default class Solid {
     constructor(id, list) {
 
@@ -11,8 +12,9 @@ export default class Solid {
         let rad = degree*Math.PI/180;
         let incrementRad = rad;
         let radX, radY, radZ;
-        let tempPolysList = [this.polysList[0]];
+        let tempPolysList = this.polysList;
         for (let i = 1; i < faces; i++) {
+            
             if (axis === 'x') {
                 radX = rad;
                 radY = 0;
@@ -26,36 +28,31 @@ export default class Solid {
                 radY = 0;
                 radZ = rad;
             }
-            tempPolysList.push(new Poly(this.vertexList, radX, radY, radZ));
-            // if (axis === 'x') {
-            //     let newPoly = new Poly(this.id, this.polysList[i].vertexList.slice());
-            //     newPoly.vertexList.forEach(element => {
-            //         element.rotateX(radX);
-            //     });  
-                    
-            // } else if (axis === 'y') {
-            //     tempPolysList[i].rotateY(radY);
-            // } else if (axis === 'z') {
-            //     tempPolysList[i].rotateZ(radZ);
-            // }
-            // rad += incrementRad;
+
+            tempPolysList.push(new Poly(this.polysList[0].id, this.polysList[0].vertexList.map(v => new Vertex(v.x, v.y, 0))));
+            tempPolysList[i].rotatePolygon(radX, radY, radZ, axis);
+            rad += incrementRad;
             
         }
         for (let i = 0; i < faces - 1; i++) {
-            drawWireframe(ctx,tempPolysList[i], tempPolysList[i+1]);
+            drawWireframe(ctx, tempPolysList[i], tempPolysList[i+1]);
 
         }
         this.polysList = tempPolysList;
+        for(let i = 0; i < this.polysList.length; i++){
+            console.log(this.polysList[i]);
+
+        }
+
     }
 
     drawWireframe(ctx, poly1, poly2){
         ctx.beginPath();
         ctx.lineWidth = 2;
-        
-        
+         
         for (let i = 0; i < poly1.vertexList.length; i++) {
             
-            this.drawWireframeX(ctx, poly1.vertexList[i], poly2.vertexList[i]);
+            poly1.drawWireframeX(ctx, poly1.vertexList[i], poly2.vertexList[i]);
         }
         ctx.closePath();
         ctx.stroke();

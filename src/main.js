@@ -17,13 +17,13 @@ let polyList = [];
 // Adicionar um event listener ao elemento <canvas>
 canvasElement2D.addEventListener('click', (event) => {
     console.log(event.offsetX, event.offsetY);
-
+    let polyID = 1;
     // Lógica para criar um objeto Vertex com base nas coordenadas do clique
     const rect = canvasElement2D.getBoundingClientRect();
     const current_point2D = new Vertex(
         event.clientX - rect.left,
         event.clientY - rect.top,
-        0
+        
     );
     
     canvasContext2D.beginPath();
@@ -34,21 +34,22 @@ canvasElement2D.addEventListener('click', (event) => {
     vertexList.push(current_point2D);
     if(vertexList.length > 2){ // tem que ter pelo menos 3 vertices pra formar um polígono
         if(vertex_distance(current_point2D, vertexList[0]) < 20){
-            let currentPoly = new Poly(polyID,vertexList);
+            let currentPoly = new Poly(polyID++, vertexList);
             currentPoly.drawPolygon(canvasContext2D);
             polyID++;
             polyList.push(currentPoly);
             vertexList = [];
-            wireframeTeste();
+            wireframeTeste(currentPoly);
         }
     }
 });
 
-function wireframeTeste(){
-    let polyTeste = polyList[0];	
-    let polyListTeste = [polyTeste];
-    let solid3D = new Solid(polyList[0].id, polyListTeste);
-    solid3D.calcWireframe(30, 'x', canvasContext3D);
+function wireframeTeste(poly){
+    let polyTeste = poly;
+    let polyListTeste = [];	
+    polyListTeste.push(polyTeste);
+    let solid3D = new Solid(polyListTeste[0].id, polyListTeste);
+    solid3D.calcWireframe(36, 'x', canvasContext3D);
 }
 
 

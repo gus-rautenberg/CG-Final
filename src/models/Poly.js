@@ -17,5 +17,12 @@ export default class Poly {
         ctx.stroke();
     }
 
+    rotatePolygon (x, y, z, axis){	
+        for(let i = 0; i < this.vertexList.length; i++){
+            this.vertexList[i].rotateVertex(x, y, z, axis);
+
+        }
+    }
+
 
 }
