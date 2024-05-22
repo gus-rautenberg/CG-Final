@@ -24,5 +24,12 @@ export default class Poly {
         }
     }
 
+    invertVertex(yMax){
+
+        for(let i = 0; i < this.vertexList.length; i++){
+            this.vertexList[i].invertVertexY(yMax);
+        }
+    }   
+
 
 }
