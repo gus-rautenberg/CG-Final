@@ -1,11 +1,26 @@
 export default class Camera {
 
-    constructor() {
+    constructor(vrp = [0, 0, 0], focalPoint = [1, 0, 0]) {
+        let y = [0, 1, 0];
         this.vrp = vrp;
+        
         this.focalPoint = focalPoint;
-        this.u = u;
-        this.v = v;
-        this.n = n;
+        console.log("focalPoint", this.focalPoint);
+        console.log("vrp", this.vrp);
+        this.n = subtrairVetores(vrp, focalPoint);
+        this.nNormalized = normalizarVetor(this.n);
+        let produtoEscalarV = produtoEscalar(y, this.n);
+        console.log("produtosEscalarV: ", produtoEscalarV);
+        this.v = subtrairVetores(y,  multiplicarValores(produtoEscalarV, this.n));
+        this.vNormalized = normalizarVetor(this.v);
+        this.u = produtoVetorial( this.v, this.n);
+        this.uNormalized = normalizarVetor(this.u);
+        console.log("n", this.n);
+        console.log("normalized", this.nNormalized);
+        console.log("v", this.v);
+        console.log("vNormalized", this.vNormalized);
+        console.log("u", this.u);
+        console.log("uNormalized", this.uNormalized);
 
     }
 
@@ -20,16 +35,36 @@ export default class Camera {
     getCamera() {
         return [this.vrp, this.focalPoint, this.u, this.v, this.n];
     }
+    getFocalPoint() {
+        return this.focalPoint;
+    }
+    getVRP() {
+        return this.vrp;
+    }
 
-    get srcMatrix() {
-        return [[this.u.x, this.u.y, this.u.z, produtoEscalar((-this.vrp), (this.u))],
-                [this.v.x, this.v.y, this.v.z, produtoEscalar((-this.vrp), (this.v))],
-                [this.n.x, this.n.y, this.n.z, produtoEscalar((-this.vrp), (this.n))],
+    getSRCMatrix() {
+        return [[this.u[0], this.u[1], this.u[2], produtoEscalar((-this.vrp), (this.u))],
+                [this.v[0], this.v[1], this.v[2], produtoEscalar((-this.vrp), (this.v))],
+                [this.n[0], this.n[1], this.n[2], produtoEscalar((-this.vrp), (this.n))],
                 [0, 0, 0, 1]];
     }
 }
 
-function produtoEscalar(vetor1, vetor2) {
+function multiplicarValores(escalar, vetor) {
+    return vetor.map((componente) => componente * escalar);
+}
+
+export function subtrairVetores(vetorA, vetorB) {
+    if (vetorA.length !== vetorB.length) {
+        throw new Error('Os vetores devem ter a mesma dimensão.');
+    }
+
+    const resultado = vetorA.map((componente, indice) => componente - vetorB[indice]);
+
+    return resultado;
+}
+
+export function produtoEscalar(vetor1, vetor2) {
     // Verifica se os vetores têm o mesmo tamanho
     // Inicializa o resultado
     let resultado = 0;
@@ -40,4 +75,40 @@ function produtoEscalar(vetor1, vetor2) {
     }
   
     return resultado;
+  }
+
+  function produtoVetorial(vetorA, vetorB) {
+    if (vetorA.length !== 3 || vetorB.length !== 3) {
+        throw new Error('Os vetores devem ter exatamente 3 elementos.');
+    }
+
+    const [a1, a2, a3] = vetorA;
+    const [b1, b2, b3] = vetorB;
+
+    const produto = [
+        a2 * b3 - a3 * b2, // Componente x
+        a3 * b1 - a1 * b3, // Componente y
+        a1 * b2 - a2 * b1  // Componente z
+    ];
+
+    return produto;
+}
+
+  function calcularMagnitude(vetor) {
+    let somaDosQuadrados = 0;
+    for (let i = 0; i < vetor.length; i++) {
+      somaDosQuadrados += vetor[i] * vetor[i];
+    }
+    return Math.sqrt(somaDosQuadrados);
+  }
+  
+ export function normalizarVetor(vetor) {
+    const magnitude = calcularMagnitude(vetor);
+    
+    const vetorNormalizado = [];
+    for (let i = 0; i < vetor.length; i++) {
+      vetorNormalizado[i] = vetor[i] / magnitude;
+    }
+  
+    return vetorNormalizado;
   }

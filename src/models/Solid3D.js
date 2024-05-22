@@ -1,5 +1,9 @@
 import Poly  from "./Poly.js";
 import Vertex from "./Vertex.js";
+import { getMJP } from "./Scene.js";
+import { getParallelMatrix, getPerspectiveMatrix } from "./ProjectionMatrix.js";
+import { multiplyMatrices, matrixMultiplicationPoints } from "./Matrix.js";
+import Camera from "./Camera.js";
 export default class Solid {
     constructor(id, list) {
 
@@ -13,7 +17,7 @@ export default class Solid {
         console.log("rad: ", rad);
         let incrementRad = rad;
         let radX, radY, radZ;
-        this.polysList[0].invertVertex(canvasHeight);
+        // this.polysList[0].invertVertex(canvasHeight);
         
         let tempPolysList = this.polysList;
         for (let i = 1; i < faces; i++) {
@@ -35,11 +39,59 @@ export default class Solid {
             // rad += incrementRad;
             
         }
+        let windowX = {
+            min: 0,
+            max: canvasWidth
+        }
+        let windowY = {
+            min: 0,
+            max: canvasHeight
+        }
+        let camera = new Camera([30, 5, 100], [5, 5, 5]);
+        let mjpMatrix = getMJP(windowX, windowY, windowX, windowY);
+        console.log("mjpMatrix: ", mjpMatrix);
+        let projectionMatrix = getPerspectiveMatrix(camera)
+        console.log("projectionMatrix: ", projectionMatrix);
+        let srcMatrix = camera.getSRCMatrix();
+        console.log("srcMatrix: ", srcMatrix);
+
+        let auxMatrix = multiplyMatrices(mjpMatrix, projectionMatrix);
+        console.log("auxMatrix: ", auxMatrix);
+
+        let matrixSRU_SRT = multiplyMatrices(auxMatrix, srcMatrix);
+        console.log("matrixSRU_SRT: ", matrixSRU_SRT);
+
+        let auxPolyList = tempPolysList;
+        console.log("size: ", tempPolysList[0].vertexList.length)
+        console.log("size templist: ", auxPolyList.length)
+        // console.log("temp[4]: ", tempPolysList[4].vertexList)
+        for(let i = 0; i < tempPolysList.length; i++){
+            for(let j = 0; j < tempPolysList[i].vertexList.length; j++){
+                let x = tempPolysList[i].vertexList[j].x;
+                let y = tempPolysList[i].vertexList[j].y;
+                let z = tempPolysList[i].vertexList[j].z;
+
+                let auxPoints = [x, y, z, 1];
+                console.log("matrixSRU_SRT: ", matrixSRU_SRT);
+                console.log("auxPoints: ", auxPoints);
+                
+                let resultMatrix = matrixMultiplicationPoints(matrixSRU_SRT, auxPoints);
+                console.log("resultMatrix: ", resultMatrix);
+
+                auxPolyList[i].vertexList[j].x = resultMatrix[0]/resultMatrix[3];
+                auxPolyList[i].vertexList[j].y = resultMatrix[1]/resultMatrix[3];
+                auxPolyList[i].vertexList[j].z = resultMatrix[2]/resultMatrix[3];
+                
+            }
+        }
         for (let i = 0; i < faces - 1; i++) {
             // this.drawWireframe(ctx, this.polysList[i], this.polysList[i + 1], canvasWidth, canvasHeight);]
-            console.log("teste: ", tempPolysList[i].vertexList);
+            // console.log("teste: ", tempPolysList[i].vertexList);
+            // console.log("teste: ", auxPolyList[i].vertexList);
+
             // this.projectAndDraw(ctx, tempPolysList[i], canvasWidth, canvasHeight);
-            tempPolysList[i].drawPolygon(ctx);            
+            // tempPolysList[i].drawPolygon(ctx);
+            auxPolyList[i].drawPolygon(ctx);              
 
         }
         this.polysList = tempPolysList;

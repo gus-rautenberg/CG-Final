@@ -1,4 +1,4 @@
-import { xRotationMatrix3D, yRotationMatrix3D, zRotationMatrix3D, multiplyMatrices } from "./Matrix.js";
+import { xRotationMatrix3D, yRotationMatrix3D, zRotationMatrix3D, matrixMultiplicationPoints } from "./Matrix.js";
 export default class Vertex {
     constructor(x, y, z) {
         this.x = x;
@@ -21,7 +21,7 @@ export default class Vertex {
 
         let matrix = xRotationMatrix3D(teta);
         let pointsMatrix = [this.x, this.y, this.z, 1];	
-        let resultMatrix = multiplyMatrices(matrix, pointsMatrix);
+        let resultMatrix = matrixMultiplicationPoints(matrix, pointsMatrix);
 
         console.log("resultMatrix: ", resultMatrix);
         
