@@ -7,14 +7,19 @@ export default class Camera {
         this.focalPoint = focalPoint;
         console.log("focalPoint", this.focalPoint);
         console.log("vrp", this.vrp);
+
         this.n = subtrairVetores(vrp, focalPoint);
         this.nNormalized = normalizarVetor(this.n);
-        let produtoEscalarV = produtoEscalar(y, this.n);
+
+        let produtoEscalarV = produtoEscalar(y, this.nNormalized);
         console.log("produtosEscalarV: ", produtoEscalarV);
-        this.v = subtrairVetores(y,  multiplicarValores(produtoEscalarV, this.n));
+
+        this.v = subtrairVetores(y,  multiplicarValores(produtoEscalarV, this.nNormalized));
         this.vNormalized = normalizarVetor(this.v);
+
         this.u = produtoVetorial( this.v, this.n);
         this.uNormalized = normalizarVetor(this.u);
+
         console.log("n", this.n);
         console.log("normalized", this.nNormalized);
         console.log("v", this.v);
@@ -43,9 +48,9 @@ export default class Camera {
     }
 
     getSRCMatrix() {
-        return [[this.u[0], this.u[1], this.u[2], produtoEscalar((-this.vrp), (this.u))],
-                [this.v[0], this.v[1], this.v[2], produtoEscalar((-this.vrp), (this.v))],
-                [this.n[0], this.n[1], this.n[2], produtoEscalar((-this.vrp), (this.n))],
+        return [[this.uNormalized[0], this.uNormalized[1], this.uNormalized[2], produtoEscalar((-this.vrp), (this.uNormalized))],
+                [this.vNormalized[0], this.vNormalized[1], this.vNormalized[2], produtoEscalar((-this.vrp), (this.vNormalized))],
+                [this.nNormalized[0], this.nNormalized[1], this.nNormalized[2], produtoEscalar((-this.vrp), (this.nNormalized))],
                 [0, 0, 0, 1]];
     }
 }

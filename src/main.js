@@ -66,11 +66,11 @@ function wireframeTeste(poly){
     let polyListTeste = [];	
     polyListTeste.push(polyTeste);
     let solid3D = new Solid(polyListTeste[0].id, polyListTeste);
-    canva2D.width = 500;
-    canva2D.height = 200;
+    // canva2D.width = 500;
+    // canva2D.height = 200;
     let canvasWidth = canva2D.width;
     let canvasHeight = canva2D.height;
-    canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);
+    // canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);
     solid3D.calcWireframe(4, 'x', canvasContext2D, canvasWidth, canvasHeight);
     
 }

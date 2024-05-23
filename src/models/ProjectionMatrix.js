@@ -22,13 +22,13 @@ export function getPerspectiveMatrix(camera)
     let value1 = (-zvp / dp_distance);
     console.log("value1: ", value1);
 
-    let value2 = zvp * (zprp/ dp_distance);
+    let value2 = zvp * (zprp / dp_distance);
     console.log("value2: ", value2);
 
     let value3 = -1/dp_distance;
     console.log("value3: ", value3);
 
-    let value4 = zprp/dp_distance;
+    let value4 = zprp / dp_distance;
     console.log("value4: ", value4);
 
     matrix =[ [1, 0, 0, 0],
@@ -38,6 +38,38 @@ export function getPerspectiveMatrix(camera)
     ]
     return matrix;
 }
+
+export function getInvertedPerspectiveMatrix(camera)
+{
+    let matrix = [[]];
+    // Zprp = VRP | Zvp = Focal Point
+    let zprp = 0.0;
+    let zvp = distanceBetweenVectors( camera.getVRP(), camera.getFocalPoint());
+    console.log("zprp: ", zprp, "zvp: ", zvp);
+
+    let dp_distance = zvp-zprp;
+    console.log("dp_distance: ", dp_distance);
+
+    let value1 = (-zvp / dp_distance);
+    console.log("value1: ", value1);
+
+    let value2 = zvp * (zprp / dp_distance);
+    console.log("value2: ", value2);
+
+    let value3 = -1/dp_distance;
+    console.log("value3: ", value3);
+
+    let value4 = zprp / dp_distance;
+    console.log("value4: ", value4);
+
+    matrix =[ [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, value1, value2],
+        [0, 0, value3, value4]
+    ]
+    return matrix;
+}
+
 
 
 function distanceBetweenVectors(vectorA, vectorB) {
