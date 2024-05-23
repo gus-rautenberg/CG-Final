@@ -12,6 +12,9 @@ let polyID = 1;
 // Obter o elemento <canvas> criado pela instância de Canva
 // const canva2D = canva2D.getCanvas();
 const canvasContext2D = canva2D.getContext("2d");
+canvasContext2D.translate(0, canva2D.height);
+canvasContext2D.scale(1, -1);
+
 let vertexList = [];
 let polyList = [];
 // let vertexA = new Vertex(-3, -4, 1);
@@ -38,7 +41,7 @@ canva2D.addEventListener('click', (event) => {
     const rect = canva2D.getBoundingClientRect();
     const current_point2D = new Vertex(
         event.clientX - rect.left,
-        event.clientY - rect.top,
+        canva2D.height - (event.clientY - rect.top),
         0,
         
     );
@@ -70,8 +73,8 @@ function wireframeTeste(poly){
     // canva2D.height = 200;
     let canvasWidth = canva2D.width;
     let canvasHeight = canva2D.height;
-    // canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);
-    solid3D.calcWireframe(4, 'x', canvasContext2D, canvasWidth, canvasHeight);
+    canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);
+    solid3D.calcWireframe(36, 'x', canvasContext2D, canvasWidth, canvasHeight);
     
 }
 
