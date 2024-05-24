@@ -1,4 +1,5 @@
 import { normalizarVetor, subtrairVetores, produtoEscalar } from "./Camera.js";
+import { multiplyMatrices } from "./Matrix.js";
 
 export function getParallelMatrix() {
     return [[1, 0, 0, 0],
@@ -8,17 +9,37 @@ export function getParallelMatrix() {
 
 }
 
-export function getPerspectiveMatrix(camera)
+export function getPerspectiveMatrix(camera, zprpT)
 {
     let matrix = [[]];
+
+    let srcMatrix = camera.getSRCMatrix();
+
+    let vrp = camera.getVRP();
+
     // Zprp = VRP | Zvp = Focal Point
-    let zprp = 0.0;
-    let zvp = distanceBetweenVectors( camera.getVRP(), camera.getFocalPoint());
-    console.log("zprp: ", zprp, "zvp: ", zvp);
+    // let zprp = zprpT;
+    // let zvp = distanceBetweenVectors( camera.getVRP(), camera.getFocalPoint());
+    let nNormalized = camera.getNNormalized();
+    let dp_distance = 40;
+    
+    let xvpSRU = vrp[0] + (dp_distance * -nNormalized[0]);
+    let yvpSRU = vrp[1] + (dp_distance * -nNormalized[1]);
+    let zvpSRU = vrp[2] + (dp_distance * -nNormalized[2]);
+    let matrixPoints = [[xvpSRU, vrp[0]],
+        [yvpSRU, vrp[1]], 
+        [zvpSRU, vrp[2]], 
+        [1, 1]];
+    console.log("matrixPoints: ", matrixPoints);
 
-    let dp_distance = zprp-zvp;
+    let points = multiplyMatrices(srcMatrix, matrixPoints)
+    console.log("points: ", points);
+
+    let zvp = points[2][0];
+    let zprp = points[2][1];
+    console.log("zvp: ", zvp);
+
     console.log("dp_distance: ", dp_distance);
-
     let value1 = (-zvp / dp_distance);
     console.log("value1: ", value1);
 

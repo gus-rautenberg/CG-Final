@@ -36,6 +36,12 @@ export default class Camera {
         this.v = v;
         this.n = n;
     }
+    getNNormalized() {
+        return this.nNormalized;
+    }
+    getZVRP() { 
+        return this.vrp[2];
+    }
 
     getCamera() {
         return [this.vrp, this.focalPoint, this.u, this.v, this.n];
@@ -48,9 +54,9 @@ export default class Camera {
     }
 
     getSRCMatrix() {
-        return [[this.uNormalized[0], this.uNormalized[1], this.uNormalized[2], produtoEscalar((-this.vrp), (this.uNormalized))],
-                [this.vNormalized[0], this.vNormalized[1], this.vNormalized[2], produtoEscalar((-this.vrp), (this.vNormalized))],
-                [this.nNormalized[0], this.nNormalized[1], this.nNormalized[2], produtoEscalar((-this.vrp), (this.nNormalized))],
+        return [[this.uNormalized[0], this.uNormalized[1], this.uNormalized[2], produtoEscalar(invertSignal(this.vrp), (this.uNormalized))],
+                [this.vNormalized[0], this.vNormalized[1], this.vNormalized[2], produtoEscalar(invertSignal(this.vrp), (this.vNormalized))],
+                [this.nNormalized[0], this.nNormalized[1], this.nNormalized[2], produtoEscalar(invertSignal(this.vrp), (this.nNormalized))],
                 [0, 0, 0, 1]];
     }
 }
@@ -81,6 +87,10 @@ export function produtoEscalar(vetor1, vetor2) {
   
     return resultado;
   }
+
+function invertSignal(A) {
+    return A.map((componente) => componente * -1);
+}
 
   function produtoVetorial(vetorA, vetorB) {
     if (vetorA.length !== 3 || vetorB.length !== 3) {
