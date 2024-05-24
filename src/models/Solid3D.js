@@ -6,6 +6,7 @@ import { multiplyMatrices, matrixMultiplicationPoints } from "./Matrix.js";
 import Camera from "./Camera.js";
 
 export default class Solid {
+    let 
     constructor(id, list) {
 
         this.id = id;  
@@ -57,26 +58,26 @@ export default class Solid {
             min: 0,
             max: canvasHeight
         }
-        let camera = new Camera([120, 120, 120], [1, 100, 5]);  // paralelo frontal
-        // let camera = new Camera([25, 15, 80], [20, 10, 25]);
+        // let camera = new Camera([120, 120, 120], [1, 100, 5]);  // paralelo frontal
+        let camera = new Camera([25, 15, 80], [20, 10, 25]);
         
         // let mjpMatrix = getMJP(sruX, sruY, windowX, windowY);
         let mjpMatrix = getInvertedMJP(sruX, sruY, windowX, windowY);
 
-        // console.log("mjpMatrix: ", mjpMatrix);
+        console.log("mjpMatrix: ", mjpMatrix);
 
-        // let projectionMatrix = getPerspectiveMatrix(camera, 80);
-        let projectionMatrix = getParallelMatrix();
-        // console.log("projectionMatrix: ", projectionMatrix);
+        let projectionMatrix = getPerspectiveMatrix(camera, 80);
+        // let projectionMatrix = getParallelMatrix();
+        console.log("projectionMatrix: ", projectionMatrix);
 
         let srcMatrix = camera.getSRCMatrix();
-        // console.log("srcMatrix: ", srcMatrix);
+        console.log("srcMatrix: ", srcMatrix);
 
         let auxMatrix = multiplyMatrices(mjpMatrix, projectionMatrix);
         // console.log("auxMatrix: ", auxMatrix);
 
         let matrixSRU_SRT = multiplyMatrices(auxMatrix, srcMatrix);
-        // console.log("matrixSRU_SRT: ", matrixSRU_SRT);
+        console.log("matrixSRU_SRT: ", matrixSRU_SRT);
 
         let auxPolyList = tempPolysList;
         // console.log("size: ", tempPolysList[0].vertexList.length)
@@ -111,6 +112,7 @@ export default class Solid {
         }
 
         for (let i = 0; i < faces; i++) {
+            console.log("auxPolyList: ", auxPolyList[i].vertexList);
             auxPolyList[i].drawPolygon(ctx);
             if (i < faces - 1) {
                 this.drawWireframe(ctx, auxPolyList[i], auxPolyList[i + 1]);  

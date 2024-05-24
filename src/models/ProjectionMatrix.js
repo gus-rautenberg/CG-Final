@@ -19,9 +19,11 @@ export function getPerspectiveMatrix(camera, zprpT)
 
     // Zprp = VRP | Zvp = Focal Point
     // let zprp = zprpT;
-    // let zvp = distanceBetweenVectors( camera.getVRP(), camera.getFocalPoint());
+    let zvp = distanceBetweenVectors( camera.getVRP(), camera.getFocalPoint());
     let nNormalized = camera.getNNormalized();
-    let dp_distance = 40;
+    let dp_distance = vrp[2]-zvp;
+    console.log("DISTANCIOA: ", dp_distance);
+    // let dp_distance = 40;
     
     let xvpSRU = vrp[0] + (dp_distance * -nNormalized[0]);
     let yvpSRU = vrp[1] + (dp_distance * -nNormalized[1]);
@@ -35,7 +37,7 @@ export function getPerspectiveMatrix(camera, zprpT)
     let points = multiplyMatrices(srcMatrix, matrixPoints)
     console.log("points: ", points);
 
-    let zvp = points[2][0];
+    zvp = points[2][0];
     let zprp = points[2][1];
     console.log("zvp: ", zvp);
 
