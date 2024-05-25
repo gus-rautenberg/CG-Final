@@ -12,7 +12,7 @@ export default class Poly {
 
         for (let i = 1; i < this.vertexList.length; i++) {
             // ctx.arc(this.vertexList[i].x, this.vertexList[i].y, 2, 0, 2 * Math.PI);
-            console.log(this.vertexList[i].x, this.vertexList[i].y);
+            // console.log(this.vertexList[i].x, this.vertexList[i].y);
             ctx.lineTo(this.vertexList[i].x, this.vertexList[i].y);
             ctx.arc(this.vertexList[i].x, this.vertexList[i].y, 2, 0, 2 * Math.PI);
 
@@ -21,6 +21,8 @@ export default class Poly {
         ctx.closePath();
         ctx.stroke();
     }
+
+
 
     rotatePolygon (x, y, z, axis){	
         for(let i = 0; i < this.vertexList.length; i++){
