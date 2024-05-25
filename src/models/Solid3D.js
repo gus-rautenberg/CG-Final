@@ -114,6 +114,13 @@ export default class Solid {
         }
         this.sliceList = auxSliceList;
         console.log("sliceList: ", this.sliceList);
+        // let edgeSlice11 = new Edge(this.sliceList[0].vertexList[1], this.sliceList[0].vertexList[1+1], 'edgeSlice1 ' );
+        // let edgeToSlice22 = new Edge(this.sliceList[0].vertexList[1+1], this.sliceList[0+1].vertexList[1+1], 'edgeToSlice2 ' );
+        // let edgeSlice22 = new Edge(this.sliceList[0+1].vertexList[1+1], this.sliceList[0+1].vertexList[1], 'edgeSlice2 ' );
+        // let edgeToSlice11 = new Edge(this.sliceList[0+1].vertexList[1], this.sliceList[0].vertexList[1], 'edgeToSlice1 ' );
+        // console.log("edges: ", edgeSlice11, edgeToSlice22, edgeSlice22, edgeToSlice11);
+        let teste1 = this.sliceList[0].vertexList[0+1];
+        console.log("teste1: ", teste1);
         for (let i = 0; i < fatias; i++) {
             let index = i;
             this.sliceList[index].drawPolygon(ctx);
@@ -127,16 +134,16 @@ export default class Solid {
                 let edgeSlice2;
                 let edgeToSlice1;
                 if(j == this.sliceList[index].vertexList.length - 1){
-                    edgeSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[index].vertexList[j+1]);
-                    edgeToSlice2 = new Edge(this.sliceList[index].vertexList[j+1], this.sliceList[0].vertexList[j+1]);
-                    edgeSlice2 = new Edge(this.sliceList[0].vertexList[j+1], this.sliceList[0].vertexList[j]);
-                    edgeToSlice1 = new Edge(this.sliceList[0].vertexList[j], this.sliceList[index].vertexList[j+1]);
+                    edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[0], "edgeSlice1 " + i);
+                    edgeToSlice2 = new Edge(this.sliceList[i].vertexList[0], this.sliceList[index].vertexList[0], 'edgeToSlice2 ' + i);
+                    edgeSlice2 = new Edge(this.sliceList[index].vertexList[0], this.sliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+                    edgeToSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
 
                 } else {  
-                    edgeSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[index].vertexList[j+1]);
-                    edgeToSlice2 = new Edge(this.sliceList[index].vertexList[j+1], this.sliceList[index+1].vertexList[j+1]);
-                    edgeSlice2 = new Edge(this.sliceList[index+1].vertexList[j+1], this.sliceList[index+1].vertexList[j]);
-                    edgeToSlice1 = new Edge(this.sliceList[index+1].vertexList[j], this.sliceList[index].vertexList[j+1]);
+                    edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
+                    edgeToSlice2 = new Edge(this.sliceList[i].vertexList[j+1], this.sliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
+                    edgeSlice2 = new Edge(this.sliceList[index].vertexList[j+1], this.sliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+                    edgeToSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
                 }
 
                 currentFaceEdges.push(edgeSlice1);
@@ -148,6 +155,7 @@ export default class Solid {
                 
             }
 
+            console.log("drawWireframe: ", this.sliceList[0].vertexList[1].x, this.sliceList[0].vertexList[1].y, this.sliceList[1].vertexList[1].x, this.sliceList[1].vertexList[1].y);
 
             if (i < fatias - 1) {
                 this.drawWireframe(ctx, this.sliceList[i], this.sliceList[i + 1], i); 

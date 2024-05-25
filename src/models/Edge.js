@@ -1,9 +1,11 @@
 export default class Edge {
     vertexInit = null;
     vertexEnd = null;
-    constructor(vertexInit, vertexEnd) {
+    edgeID = null;
+    constructor(vertexInit, vertexEnd, edgeID) {
         this.vertexInit = vertexInit;
         this.vertexEnd = vertexEnd;
+        this.edgeID = edgeID;
     }
 
 }
