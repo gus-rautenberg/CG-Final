@@ -245,18 +245,19 @@ export default class Solid {
             let zBuffer = new ZBuffer(windowX, windowY, this.visibleFaceList[i]);
             zBuffer.render(ctx);
 
+            console.log("zbuffer " + i + ": ", zBuffer.getFace());
         }
 
         
-        console.log(this.facesList);
+        // console.log(this.facesList);
         let pintor = new Pintor();
         for(let i = 0; i < this.facesList.length; i++){
-            console.log("Centroiude: ", this.facesList[i].centroide);
+            // console.log("Centroiude: ", this.facesList[i].centroide);
             pintor.getDistance(this.facesList[i], camera.getVRP());
-            console.log("Dist: ", pintor.distance);
+            // console.log("Dist: ", pintor.distance);
         }
         for(let i = 0; i < tempFacesList.length; i++){
-            console.log(i + " Visibilidade: ", this.testeVisibilidade(tempFacesList[i], camera.getVRP()));
+            // console.log(i + " Visibilidade: ", this.testeVisibilidade(tempFacesList[i], camera.getVRP()));
         }
     }
 
