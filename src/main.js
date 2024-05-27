@@ -81,8 +81,8 @@ function wireframeTeste(poly){
     let sruHeight = canva2D.height;
     canva2D.width = 320; //320 600
     canva2D.height = 240; //240 600 
-    // canvasContext2D.translate(0, canva2D.height);
-    // canvasContext2D.scale(1, -1);
+    canvasContext2D.translate(0, canva2D.height);
+    canvasContext2D.scale(1, -1);
     let canvasWidth = canva2D.width;
     let canvasHeight = canva2D.height;
     // canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);

@@ -8,16 +8,30 @@ import Edge from "./Edge.js";
 import Face from "./Face.js";
 import Pintor from "./Pintor.js";
 import ZBuffer from "./ZBuffer.js";
+import ConstantShade from "./ConstantShade.js";
+import GouroudShade from "./GouroudShade.js";
+import ZBufferGouraud from "./ZBufferGouroud.js";
 
 export default class Solid {
     facesList = [];
     visibleFaceList = [];
+    notVisibleFaceList = [];
+    color = [10, 10, 1];
+
+    material = {
+        ka :  [0.97, 0.34, 0.6],
+        kd :  [0.4, 0.12, 0.7],
+        ks :  [0.67, 0.3, 0.6],
+        n :   50,
+    }
     constructor(id, list) {
 
         this.id = id;  
         this.sliceList = list;
     }
-
+    getMaterial() {
+        return this.material;
+    }
     calcWireframe(fatias, axis, ctx, sruWidth, sruHeight, canvasWidth, canvasHeight) {
         let tempFacesList = [];
         let degree = 360/fatias;
@@ -241,12 +255,35 @@ export default class Solid {
 
             // let result = this.testeVisibilidade(tempFacesList[i], camera.getVRP(), ctx, i);
         this.drawVisibleFaces(ctx, camera, count);
-        for(let i = 0; i < this.visibleFaceList.length; i++){
-            let zBuffer = new ZBuffer(windowX, windowY, this.visibleFaceList[i]);
-            zBuffer.render(ctx);
+        let L = {vector : [2311000, 0, 2000], Il : [12, 20, 10]};	
 
-            console.log("zbuffer " + i + ": ", zBuffer.getFace());
+        
+
+        let zBufferFrame = Array.from({ length: windowY.max }, () => Array.from({ length: windowX.max }, () => null));
+
+        for(let i = 0; i < this.visibleFaceList.length; i++){
+            let material = this.getMaterial();
+            // let constantShade = new ConstantShade([120, 160, 200], L, this.visibleFaceList[i], camera, material);
+            // constantShade.constantRun();
+            let gouroudShade = new GouroudShade([120, 160, 200], L, this.visibleFaceList[i], camera, material, this.facesList);
+            gouroudShade.gouroudRun();
+            // let zBuffer = new ZBuffer(windowX, windowY, this.visibleFaceList[i]);
+            // zBuffer.render(ctx, zBufferFrame, this.color);
+            let zBufferGouraud = new ZBufferGouraud(windowX, windowY, this.visibleFaceList[i]);
+            zBufferGouraud.render(ctx, zBufferFrame, this.color);
+            // console.log("zbuffer " + i + ": ", zBuffer.getFace());
         }
+
+        for (let currentY = windowY.min; currentY < windowY.max; currentY++) {
+            for(let currentX = windowX.min; currentX < windowX.max; currentX++) {
+                if (zBufferFrame[currentY][currentX] != null) {
+                    ctx.fillStyle = zBufferFrame[currentY][currentX].color;
+                    ctx.fillRect(currentX, currentY, 1, 1);
+                }
+            }
+        }
+        // this.drawVisibleFaces(ctx, camera, count);
+
 
         
         // console.log(this.facesList);
@@ -268,7 +305,7 @@ export default class Solid {
         const O = [x, y, z];
         const oNormalized = normalizarVetor(O)
         // console.log("o: ", O);
-        // console.log("normal: ", face.getNormal());
+        console.log("normal: ", face.getNormal());
 
         const result = produtoEscalar(oNormalized, face.getNormal());
         if(result > 0){
@@ -335,39 +372,12 @@ export default class Solid {
                 ctx.closePath();
                 ctx.stroke();
             }
+            else {
+                this.notVisibleFaceList.push(this.facesList[i]);
+            }
         }
     }
 
-
-    // drawWireframe2(ctx, poly1, poly2, index){
-
-    //     ctx.lineWidth = 2;
-    //     ctx.beginPath();
-    //     edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
-    //     edgeToSlice2 = new Edge(this.sliceList[i].vertexList[j+1], this.sliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
-    //     edgeSlice2 = new Edge(this.sliceList[index].vertexList[j+1], this.sliceList[index].vertexList[j], 'edgeSlice2 ' + i);
-    //     edgeToSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-    //     for(let i = 0; i < poly1.vertexList.length; i++){
-    //         ctx.strokeStyle = this.getRandomColor();
-    //         if(i == poly1.vertexList.length - 1){
-    //             ctx.moveTo(poly1.vertexList[i].x, poly1.vertexList[i].y);
-    //             ctx.lineTo(poly1.vertexList[0].x, poly2.vertexList[0].y);
-    //             ctx.lineTo(poly2.vertexList[0].x, poly1.vertexList[0].y);
-    //             ctx.lineTo(poly2.vertexList[i].x, poly2.vertexList[i].y);
-    //             ctx.lineTo(poly1.vertexList[i].x, poly1.vertexList[i].y);
-    //         } else {
-    //             ctx.moveTo(poly1.vertexList[i].x, poly1.vertexList[i].y);
-    //             ctx.lineTo(poly1.vertexList[i+1].x, poly2.vertexList[i+1].y);
-    //             ctx.lineTo(poly2.vertexList[i+1].x, poly1.vertexList[i+1].y);
-    //             ctx.lineTo(poly2.vertexList[i].x, poly2.vertexList[i].y);
-    //             ctx.lineTo(poly1.vertexList[i].x, poly1.vertexList[i].y);
-    //         }
-    //         ctx.stroke();
-    //         ctx.closePath();
-
-            
-    //     }    
-    // }
 
     drawWireframe(ctx, poly1, poly2, index){
         ctx.lineWidth = 2;

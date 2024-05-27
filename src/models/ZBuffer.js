@@ -1,8 +1,11 @@
 export default class ZBuffer {
-    viewPort = {};
+    viewPortX = {};
+    viewPortY = {};
     face;
     yMin = null;
     yMax = null;
+    xMin = null;
+    xMax = null;
 
     constructor(viewPortX, viewPortY, face) {
         this.viewPortX = viewPortX;
@@ -10,17 +13,39 @@ export default class ZBuffer {
         this.face = face;
 
         this.findFaceYMinAndMax();
+        this.findFaceXMinMax();
     }
     getFace() {
         return this.face;
     }
+    getRandomColor() {
+        // Gera um componente RGB aleatório entre 0 e 255
+        const getRandomComponent = () => Math.floor(Math.random() * 256);
+    
+        // Gera os três componentes RGB
+        const r = getRandomComponent();
+        const g = getRandomComponent();
+        const b = getRandomComponent();
+    
+        // Retorna a cor no formato RGB
+        return `rgb(${r}, ${g}, ${b})`;
+    }
 
-    render(ctx) {
+    render(ctx, zBuffer, solidColor) {
+        console.log("SolidColor: ", solidColor, " iluConstant: ", this.face.getIluminationFaceConstant());
+        let colorR = solidColor[0] * this.face.getIluminationFaceConstant()[0];
+        let colorG = solidColor[1] * this.face.getIluminationFaceConstant()[1];
+        let colorB = solidColor[2] * this.face.getIluminationFaceConstant()[2];
+        let colorRGB = `rgb(${colorR}, ${colorG}, ${colorB})`;
+        
         let intersections = new Map();
-        for (let y = this.yMin; y < this.yMax; y++) {
+        console.log("face: ", this.face);
+        console.log("viewPort: ", this.viewPortY.min, this.viewPortY.max);
+        
+        for (let y = this.viewPortY.min; y < this.viewPortY.max; y++) {
             intersections.set(y, []);
         }
-
+        
         this.face.listEdges.forEach(edge => {
             let [dX, dZ] = this.calcDAndT(edge);
             let [yMinEdge, yMaxEdge, xMinEdge, xMaxEdge] = this.findEdgeMinMax(edge);
@@ -30,63 +55,95 @@ export default class ZBuffer {
 
             let initialY, endY, currentX, currentR, currentG, currentB, currentZ;
     
-            if (edge.vertexInit.y > edge.vertexEnd.y) { //talvez mudar para <
-                initialY = edge.vertexInit.y;
-                endY = edge.vertexEnd.y;
+            if (edge.vertexInit.y < edge.vertexEnd.y) { //talvez mudar para <
+                initialY = Math.ceil(edge.vertexInit.y);
+                endY = Math.floor(edge.vertexEnd.y);
                 currentX = edge.vertexInit.x;
                 currentZ = edge.vertexInit.z;
                 // currentR = edge.vertexInit.extractRGB().r;
                 // currentG = edge.vertexInit.extractRGB().g;
                 // currentB = edge.vertexInit.extractRGB().b;
             } else {
-                initialY = edge.vertexEnd.y;
-                endY = edge.vertexInit.y;
+                initialY = Math.ceil(edge.vertexEnd.y);
+                endY = Math.floor(edge.vertexInit.y);
                 currentX = edge.vertexEnd.x;
                 currentZ = edge.vertexEnd.z;
                 // currentR = edge.vertexEnd.extractRGB().r;
                 // currentG = edge.vertexEnd.extractRGB().g;
                 // currentB = edge.vertexEnd.extractRGB().b;
             }
-    
-            for (let y = initialY; y < endY; y++) {
+            console.log("initialY: ", initialY, "endY: ", endY);
+            for (let y = initialY; y <= endY; y++) {
+                // console.log("y: ", y);
                 intersections.get(y).push({ x: currentX, z: currentZ });
-                currentX += dx;
-                currentZ += dz;
+                // console.log("x: ", currentX, "z: ", currentZ);
+                // console.log("intersections.get", intersections.get(y));
+                
+                currentX += dX;
+                currentZ += dZ;
                 // currentR += edgeRGB[i].rateR;
                 // currentG += edgeRGB[i].rateG;
                 // currentB += edgeRGB[i].rateB;
             }
+            console.log("intersections(162): ", intersections.get(162));
             
         
         });
 
+        console.log("intersectionsAntes: ", intersections);
         intersections.forEach((sortX) => {
             const sortedX = sortX.slice().sort((a, b) => a.x - b.x);
             sortX.splice(0, sortX.length, ...sortedX);
         });
 
-        console.log("intersections: ", intersections);
-        let zBuffer = Array(this.viewPortY).fill(null).map(() => Array(this.viewPortX).fill(Infinity));
+        console.log("intersectionsTUDO: ", intersections);
 
-        for (let currentY = this.yMin; currentY < this.yMax; currentY++) {
+
+        // let zBuffer;
+        // for(let y = Math.ceil(this.viewPortY.min); y < Math.floor(this.viewPortY.max); y++) {
+        //     for(let currentX = Math.ceil(this.viewPortY.min); currentX < Math.floor(this.viewPortY.max); currentX++) {
+        //         zBuffer[y][currentX] = null;
+        //     }
+        // }
+        // let zBuffer = Array.from({ length: this.viewPortY.max }, () => Array.from({ length: this.viewPortX.max }, () => null));
+
+        // console.log("zBuffer: ", zBuffer);
+
+
+        for (let currentY = this.viewPortY.min; currentY < this.viewPortY.max; currentY++) {
             let edge = intersections.get(currentY);
-        
-            for (let i = 0; i < edge.length; i += 2) {
+            // console.log("edge: ", edge, "currentY: ", currentY);
+            for (let i = 0; i < edge.length; i+=2) {
                 let initialX = Math.ceil(edge[i].x);
                 let endX = Math.floor(edge[i + 1].x);
                 let currentZ = edge[i].z;
-                let dz = (edge[i + 1].z - edge[i].z) / (endX - initialX);
-
+                let tZX = (edge[i + 1].z - edge[i].z) / (edge[i + 1].x - edge[i].x);
+                console.log("currentZ: ", currentZ);
                 for (let currentX = initialX; currentX < endX; currentX++) {
-                    if (currentZ < zBuffer[currentY][currentX]) {
-                        zBuffer[currentY][currentX] = currentZ;
-                        ctx.fillStyle = `red`; // Pode ser alterado para manipular cores conforme necessário
-                        ctx.fillRect(currentX, currentY, 1, 1);
+                    // console.log("currentX: ", currentX, "currentZ: ", currentZ);    
+                    // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
+                    if(zBuffer[currentY][currentX] == null) {
+                        if (currentZ < zBuffer[currentY][currentX]) {
+                            zBuffer[currentY][currentX] = {currentZ : currentZ, color: colorRGB};
+                            // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
+                        }
+                        zBuffer[currentY][currentX] = {currentZ : currentZ, color: colorRGB};
+                    } else {
+                        if (currentZ < zBuffer[currentY][currentX].currentZ) {
+                            zBuffer[currentY][currentX] = {currentZ : currentZ, color: colorRGB};
+                            // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
+                        }
                     }
-                    currentZ += dz;
+                   
+                    currentZ += tZX;
                 }
             }
         }
+
+        console.log("zBuffer: ", zBuffer);
+
+
+
 
         // for (let currentY = this.yMin; currentY < this.yMax; currentY++) {
         //     let edge = intersections.get(currentY);
@@ -127,6 +184,17 @@ export default class ZBuffer {
             }
             if (this.yMax === null || edge.vertexInit.y > this.yMax) {
                 this.yMax = edge.vertexInit.y;
+            }
+        });
+    }
+
+    findFaceXMinMax() {
+        this.face.listEdges.forEach(edge => {
+            if (this.xMin === null || edge.vertexInit.x < this.xMin) {
+                this.xMin = edge.vertexInit.x;
+            }
+            if (this.xMax === null || edge.vertexInit.x > this.xMax) {
+                this.xMax = edge.vertexInit.x;
             }
         });
     }

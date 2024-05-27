@@ -2,11 +2,19 @@ import Vertex from "./Vertex.js";
 export default class Face {
     listEdges = [];
     centroide;
-    normal;
+    vetNormal;
+    iluminationFaceConstant;
+    vetNormalized;
+
+    verticesGouroud = {
+
+    }
+
     constructor(listEdges) {
         this.listEdges = listEdges;
         this.centroide = this.calcCentroide();
-        this.normal = this.calcNormal();
+        this.vetNormal = this.calcNormal();
+        this.vetNormalized = this.normalizarVetor(this.vetNormal);
         // console.log("calcNormal: ", this.calcNormal);
     }
 
@@ -23,7 +31,49 @@ export default class Face {
     }
 
     getNormal() {
-        return this.normal;
+        return this.vetNormalized;
+    }
+
+    setGouroudIllumination(totalIlumination = []) {
+        let vertices = this.getVerticesFromEdges();
+        this.vertexIlluminationGouroud = {};
+        for(let і = 0; і < vertices.length; і++) {
+            for(let j = 0; j < this.listEdges.length; j++) {
+                if(this.listEdges[j].vertexInit === vertices[і] ) {
+                    this.listEdges[j].setInitIlumination(totalIlumination[і]);
+                } if(this.listEdges[j].vertexEnd === vertices[і] ) {
+                    this.listEdges[j].setEndIlumination(totalIlumination[і]);
+                }
+
+            }
+        }
+    }
+
+    vertexEqual(v1, v2) {
+        return v1.x === v2.x && v1.y === v2.y && v1.z === v2.z;
+    }
+
+
+    checkVertex(vertex) {
+        let vertices = this.getVerticesFromEdges();
+        return vertices.some(v => this.vertexEqual(v, vertex));
+    }
+
+    getVerticesFromEdges() {
+        let vertices = [];
+        this.listEdges.forEach(edge => {
+            if (!vertices.some(v => this.vertexEqual(v, edge.vertexInit))) {
+                vertices.push(edge.vertexInit);
+            }
+            if (!vertices.some(v => this.vertexEqual(v, edge.vertexEnd))) {
+                vertices.push(edge.vertexEnd);
+            }
+        });
+        return vertices;
+    }
+
+    getIluminationFaceConstant(){
+        return this.iluminationFaceConstant;
     }
 
     calcCentroide() {
@@ -42,6 +92,9 @@ export default class Face {
         let centroideZ = sumZ / numVertices;
 
         return [centroideX, centroideY, centroideZ];
+    }
+    setIlumination(totalIlumination){
+        this.iluminationFaceConstant = totalIlumination;
     }
 
     getVerticesFromEdges() {
@@ -87,6 +140,25 @@ export default class Face {
         let points = [x, y, z];
 
         return points;
+    }
+
+    normalizarVetor(vetor) {
+        const magnitude = this.calcularMagnitude(vetor);
+        
+        const vetorNormalizado = [];
+        for (let i = 0; i < vetor.length; i++) {
+            vetorNormalizado[i] = vetor[i] / magnitude;
+        }
+        
+        return vetorNormalizado;
+    }
+
+    calcularMagnitude(vetor) {
+        let somaDosQuadrados = 0;
+        for (let i = 0; i < vetor.length; i++) {
+          somaDosQuadrados += vetor[i] * vetor[i];
+        }
+        return Math.sqrt(somaDosQuadrados);
     }
     
 
