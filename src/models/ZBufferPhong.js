@@ -4,6 +4,27 @@ export default class ZBufferPhong extends ZBuffer{
 
 
     render(ctx, zBuffer, solidColor) {
+         // let verticesFromFace = this.getVerticesFromEdges();
+        // let facesA, facesB, facesC, facesD = [];
+        // console.log("verticesFromFace: ", verticesFromFace);
+        // facesA = this.checkVertexInSolidFaces(verticesFromFace[0], facesA);
+        // facesB = this.checkVertexInSolidFaces(verticesFromFace[1], facesB);
+        // facesC = this.checkVertexInSolidFaces(verticesFromFace[2], facesC);
+        // facesD = this.checkVertexInSolidFaces(verticesFromFace[3], facesD);
+        // console.log("facesA: ", facesA);
+        // let vertexANormalizedMedia = this.getVertexNormalizedMedia(facesA);
+        // let vertexBNormalizedMedia = this.getVertexNormalizedMedia(facesB);
+        // let vertexCNormalizedMedia = this.getVertexNormalizedMedia(facesC);
+        // let vertexDNormalizedMedia = this.getVertexNormalizedMedia(facesD);
+        // let vertexNormalized = [vertexANormalizedMedia, vertexBNormalizedMedia, vertexCNormalizedMedia, vertexDNormalizedMedia];	
+
+        // let Lnormal = this.subtractVectors2(this.L.vector, this.face.centroide);
+        // Lnormal = this.normalizarVetor(Lnormal);
+        
+        // let s = this.subtractVectors(this.camera.getVRP(),  this.face.centroide);
+        
+        // s = this.normalizarVetor(s);
+        // let h = this.getH(s, Lnormal);
         console.log("SolidColor: ", solidColor, " iluConstant: ", this.face.getIluminationFaceConstant());
 
         let colorRGB;

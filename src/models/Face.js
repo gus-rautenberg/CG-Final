@@ -34,6 +34,12 @@ export default class Face {
         return this.vetNormalized;
     }
 
+    setPhongIllumination(totalIlumination = [], y, x) {
+        this.setPhongIllumination[y][x] = totalIlumination;
+    }
+ 
+
+
     setGouroudIllumination(totalIlumination = []) {
         let vertices = this.getVerticesFromEdges();
         this.vertexIlluminationGouroud = {};
