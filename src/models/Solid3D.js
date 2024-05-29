@@ -255,7 +255,8 @@ export default class Solid {
 
             // let result = this.testeVisibilidade(tempFacesList[i], camera.getVRP(), ctx, i);
         this.drawVisibleFaces(ctx, camera, count);
-        let L = {vector : [2311000, 0, 2000], Il : [12, 20, 10]};	
+        let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	
+        // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	//gouroud
 
         
 

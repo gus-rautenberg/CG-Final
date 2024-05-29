@@ -1,6 +1,6 @@
 import ZBuffer from "./ZBuffer.js";
 
-export default class ZBufferGouraud extends ZBuffer{
+export default class ZBufferPhong extends ZBuffer{
 
 
     render(ctx, zBuffer, solidColor) {

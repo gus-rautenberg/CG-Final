@@ -28,7 +28,7 @@ export default class ConstantShade {
         let ambientLightingB = this.ambientLight[2] * this.material.ka[2];
         console.log("ambientLightingR: ", ambientLightingR, " ambientLightingG: ", ambientLightingG, "ambientLightingB: ", ambientLightingB);
         this.ambientLighting = [ambientLightingR, ambientLightingG, ambientLightingB];
-        console.log("ambientLighting: ", this.ambientLighting);
+        console.log("CONSTANT: ambientLighting Final: ", this.ambientLighting);
     }   
 
     constantRun() {
@@ -38,10 +38,13 @@ export default class ConstantShade {
         let totalIlumination;
         console.log("this.L.vector: ", this.L.vector);
         console.log("this.face.centroide: ", this.face.centroide);
+
         let Lnormal = this.subtractVectors(this.L.vector, this.face.centroide);
         console.log("Lnormal antes de normalizar: ", Lnormal);
+
         Lnormal = this.normalizarVetor(Lnormal);
         let totalR, totalG, totalB;
+
         console.log("this.getNormal: ", this.face.getNormal());
         console.log("Lnormal: ", Lnormal);
 
@@ -53,7 +56,7 @@ export default class ConstantShade {
             let LDg = this.L.Il[1] * this.material.kd[1] * test;
             let LDb = this.L.Il[2] * this.material.kd[2] * test;
             let LD = [LDr, LDg, LDb];
-            console.log("LD ES1: ", LD);
+            console.log("CONSTANT: LD FINAL: ", LD);
             console.log("this.face.getNormal ES1: ", this.face.getNormal());
             console.log("Lnormal ES1: ", Lnormal);
 
@@ -76,24 +79,24 @@ export default class ConstantShade {
                 totalR = this.ambientLighting[0] + LD[0] + LS[0];
                 totalG = this.ambientLighting[1] + LD[1] + LS[1];
                 totalB = this.ambientLighting[2] + LD[2] + LS[2];
-                console.log("Com Especular ", "totalR: ", totalR, "totalG: ", totalG, "totalB: ", totalB);
+                console.log("CONSTANT FINAL Com Especular ", "totalR: ", totalR, "totalG: ", totalG, "totalB: ", totalB);
                 
             } else {
                 totalR = this.ambientLighting[0] + LD[0];
                 totalG = this.ambientLighting[1] + LD[1];
                 totalB = this.ambientLighting[2] + LD[2];
-                console.log("Sem Especular ",  "totalR: ", totalR, "totalG: ", totalG, "totalB: ", totalB);
+                console.log("CONSTANT FINAL Sem Especular ",  "totalR: ", totalR, "totalG: ", totalG, "totalB: ", totalB);
 
             }
             totalIlumination = [totalR, totalG, totalB];
         } else {
-            console.log("SO AMBIENTE: ", this.ambientLighting);
+            // console.log("SO AMBIENTE: ", this.ambientLighting);
             totalIlumination = this.ambientLighting;
         }
         this.totalIlumination = totalIlumination;
         console.log("totalIluminationOK: ", totalIlumination);
         this.face.setIlumination(totalIlumination);
-        console.log("Iluminacao Face: ", this.face.getIluminationFaceConstant());
+        console.log("CONSTANT:Iluminacao Face FINAL: ", this.face.getIluminationFaceConstant());
        
 
 

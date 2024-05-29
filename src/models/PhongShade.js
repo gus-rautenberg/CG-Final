@@ -1,4 +1,4 @@
-export default class GouroudShade {
+export default class Phong {
     ambientLight;
     camera;
 
@@ -31,7 +31,7 @@ export default class GouroudShade {
         let ambientLightingB = this.ambientLight[2] * this.material.ka[2];
         console.log("ambientLightingR: ", ambientLightingR, " ambientLightingG: ", ambientLightingG, "ambientLightingB: ", ambientLightingB);
         this.ambientLighting = [ambientLightingR, ambientLightingG, ambientLightingB];
-        console.log("GOUROUD: ambientLightingFinal: ", this.ambientLighting);
+        console.log("PHONG: ambientLightingFinal: ", this.ambientLighting);
     }
     
     checkVertexInSolidFaces(vertex, allFacesWithVertex = []) {
@@ -78,7 +78,18 @@ export default class GouroudShade {
         return v1.x === v2.x && v1.y === v2.y && v1.z === v2.z;
     }
 
-    gouroudRun() {
+    getH(v1, v2) {
+        let h = [];
+        h = this.sumVectors(v1, v2);
+        let x = h[0]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
+        let y = h[1]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
+        let z = h[2]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
+        h = [x, y, z];
+
+        return h;
+    }
+
+    phongRun() {
         this.setAmbientLighting();
 
         let verticesFromFace = this.getVerticesFromEdges();
@@ -96,15 +107,20 @@ export default class GouroudShade {
         let vertexNormalized = [vertexANormalizedMedia, vertexBNormalizedMedia, vertexCNormalizedMedia, vertexDNormalizedMedia];	
         console.log("vertexNormalized: ", vertexNormalized);
         let totalIlumination = [];
+        let Lnormal = this.subtractVectors2(this.L.vector, this.face.centroide);
+        Lnormal = this.normalizarVetor(Lnormal);
+
+        let s = this.subtractVectors(this.camera.getVRP(),  this.face.centroide);
+
+        s = this.normalizarVetor(s);
+        let h = this.getH(s, Lnormal);
+
+        console.log("Lnormal FINAL: ", Lnormal);
         
         for(let i = 0; i < 4; i++) {
             console.log("this.L.vecto1: ", this.L.vector);
             console.log("verticesFromFace[i]: ", verticesFromFace[i]);
-            let Lnormal = this.subtractVectors2(this.L.vector, verticesFromFace[i]);
-            console.log("Lnormal Anttes: ", Lnormal);
-            Lnormal = this.normalizarVetor(Lnormal);
             let totalR, totalG, totalB;
-            console.log("Lnormal FINAL: ", Lnormal);
             console.log("vertexNormalized FINAL: ", vertexNormalized[i]);
             const test = this.produtoEscalar(vertexNormalized[i], Lnormal);
             console.log("test FINAL: ", test);
@@ -113,27 +129,25 @@ export default class GouroudShade {
                 let LDg = this.L.Il[1] * this.material.kd[1] * test;
                 let LDb = this.L.Il[2] * this.material.kd[2] * test;
                 let LD = [LDr, LDg, LDb];
-                console.log("GOUROUD: LD FINAL: ", LD);
+                console.log("PHONG: LD FINAL: ", LD);
 
 
                 let r = this.multiplyScalarByVector((test * 2), this.subtractVectors(vertexNormalized[i], Lnormal));
                 console.log("r FINAL: ", r);
-                let s = this.subtractVectors2(this.camera.getVRP(), verticesFromFace[i]);
 
-                s = this.normalizarVetor(s);
 
-                let RS = this.produtoEscalar(r, s);
-                console.log("RS FINAL: ", RS);
-                if(RS){
-                    let LSr = this.L.Il[0] * this.material.ks[0] * Math.pow(RS, this.material.n);
-                    let LSg = this.L.Il[1] * this.material.ks[1] * Math.pow(RS, this.material.n);
-                    let LSb = this.L.Il[2] * this.material.ks[2] * Math.pow(RS, this.material.n);
+                let NH = this.produtoEscalar(vertexNormalized[i], h);
+                console.log("NH FINAL: ", NH);
+                if(NH){
+                    let LSr = this.L.Il[0] * this.material.ks[0] * Math.pow(NH, this.material.n);
+                    let LSg = this.L.Il[1] * this.material.ks[1] * Math.pow(NH, this.material.n);
+                    let LSb = this.L.Il[2] * this.material.ks[2] * Math.pow(NH, this.material.n);
                     let LS = [LSr, LSg, LSb];
 
                     totalR = this.ambientLighting[0] + LD[0] + LS[0];
                     totalG = this.ambientLighting[1] + LD[1] + LS[1];
                     totalB = this.ambientLighting[2] + LD[2] + LS[2];
-                    console.log("GOUROUD: final LS", LS);
+                    console.log("PHONG: final LS", LS);
                     
                 } else {
                     totalR = this.ambientLighting[0] + LD[0];
@@ -151,7 +165,7 @@ export default class GouroudShade {
         }
         
         this.face.setGouroudIllumination(totalIlumination);
-        console.log("GOUROUD: totalIllumination Final: ", totalIlumination);
+        console.log("PHONG: totalIllumination Final: ", totalIlumination);
 
 
 

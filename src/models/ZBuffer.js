@@ -33,9 +33,9 @@ export default class ZBuffer {
 
     render(ctx, zBuffer, solidColor) {
         console.log("SolidColor: ", solidColor, " iluConstant: ", this.face.getIluminationFaceConstant());
-        let colorR = solidColor[0] * this.face.getIluminationFaceConstant()[0];
-        let colorG = solidColor[1] * this.face.getIluminationFaceConstant()[1];
-        let colorB = solidColor[2] * this.face.getIluminationFaceConstant()[2];
+        let colorR = this.face.getIluminationFaceConstant()[0];
+        let colorG = this.face.getIluminationFaceConstant()[1];
+        let colorB = this.face.getIluminationFaceConstant()[2];
         let colorRGB = `rgb(${colorR}, ${colorG}, ${colorB})`;
         
         let intersections = new Map();
