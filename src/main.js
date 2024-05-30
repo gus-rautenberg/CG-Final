@@ -90,7 +90,7 @@ function wireframeTeste(poly){
     let canvasWidth = canva2D.width;
     let canvasHeight = canva2D.height;
     // canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);
-    solid3D.calcWireframe(3, 'x', canvasContext2D, sruWidth, sruHeight, canvasWidth, canvasHeight);
+    solid3D.calcWireframe(4, 'x', canvasContext2D, sruWidth, sruHeight, canvasWidth, canvasHeight);
     // solid3D.identifyFaces();
 
     // console.log("canvWidth: ", canva2D.width, "canvHeight: ", canva2D.height);

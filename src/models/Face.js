@@ -166,6 +166,36 @@ export default class Face {
         }
         return Math.sqrt(somaDosQuadrados);
     }
+
+    isCounterClockwise() {
+        let p3 = this.listEdges[1].vertexEnd;
+        // console.log("p3: ", p3);
+        let p2 = this.listEdges[1].vertexInit;
+        let p1 = this.listEdges[0].vertexInit;
+        let A = this.subtractVectors(p1, p2);
+        let B = this.subtractVectors(p3, p2);
+        let auxA = [A[0], A[1], A[2]];
+        let auxB = [B[0], B[1], B[2]];
+        let C = this.produtoEscalar(auxB, auxA);
+        console.log("testeDoC: ", C);
+        if(C > 0) {
+            return true;
+        }
+        return false;
+    }
+
+   produtoEscalar(vetor1, vetor2) {
+        // Verifica se os vetores têm o mesmo tamanho
+    // Inicializa o resultado
+    let resultado = 0;
+    
+    // Calcula o produto escalar
+    for (let i = 0; i < vetor1.length; i++) {
+        resultado += vetor1[i] * vetor2[i];
+    }
+    
+    return resultado;
+    }
     
 
 }

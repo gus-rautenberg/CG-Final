@@ -64,58 +64,65 @@ export default class Solid {
             
         }
         console.log("testeWireframe: ", tempSliceList);
-        for (let i = 0; i < fatias; i++) {
-            let index = i;
-            if(i == fatias-1) {
-                index = 0;
-            } 
-            for(let j = 0; j < tempSliceList[index].vertexList.length; j++){
-                const currentFaceEdges = [];
-                let edgeSlice1;
-                let edgeToSlice2;
-                let edgeSlice2;
-                let edgeToSlice1;
-                if(j == tempSliceList[index].vertexList.length - 1){
-                    if(i == fatias-1) {
-                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
-                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[index].vertexList[0], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(tempSliceList[index].vertexList[0], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    } else {
-                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
-                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[i+1].vertexList[0], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[0], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    }
+        // for (let i = 0; i < fatias; i++) {
+        //     let index = i;
+        //     if(i == fatias-1) {
+        //         index = 0;
+        //     } 
+        //     for(let j = 0; j < tempSliceList[index].vertexList.length; j++){
+        //         const currentFaceEdges = [];
+        //         let edgeSlice1;
+        //         let edgeToSlice2;
+        //         let edgeSlice2;
+        //         let edgeToSlice1;
+        //         if(j == tempSliceList[index].vertexList.length - 1){
+        //             if(i == fatias-1) {
+        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
+        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[index].vertexList[0], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(tempSliceList[index].vertexList[0], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             } else {
+        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
+        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[i+1].vertexList[0], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[0], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             }
 
 
-                } else {  
+        //         } else {  
 
-                    if(i == fatias-1) {
-                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
-                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(tempSliceList[index].vertexList[j+1], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    } else {
-                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
-                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[i+1].vertexList[j+1], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[j+1], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    }
+        //             if(i == fatias-1) {
+        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
+        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(tempSliceList[index].vertexList[j+1], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             } else {
+        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
+        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[i+1].vertexList[j+1], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[j+1], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             }
 
-                }
+        //         }
 
-                currentFaceEdges.push(edgeSlice1);
-                currentFaceEdges.push(edgeToSlice2);
-                currentFaceEdges.push(edgeSlice2);
-                currentFaceEdges.push(edgeToSlice1);
-                const face = new Face(currentFaceEdges);
-                tempFacesList.push(face);
+        //         currentFaceEdges.push(edgeSlice1);
+        //         currentFaceEdges.push(edgeToSlice2);
+        //         currentFaceEdges.push(edgeSlice2);
+        //         currentFaceEdges.push(edgeToSlice1);
+        //         const face = new Face(currentFaceEdges);
+        //         if(face.isCounterClockwise()) {
+        //             console.log("faceTesteLogica Verdadeiro: ", face);
+        //             // this.facesList.push(face);
+        //             tempFacesList.push(face);
+        //         } else {
+        //             console.log("faceTesteLogica Falso: ", face);
+        //         // this.facesList.push(face);
                 
-            }
+        //         }
+        //     }
 
 
-        }
+        // }
 
         let sruX = {
             min: -sruWidth,
@@ -136,7 +143,7 @@ export default class Solid {
         }
         console.log("TEMPPOLYLIST: ", tempSliceList);
         // let camera = new Camera([120, 120, 120], [1, 100, 5]);  // paralelo frontal
-        let camera = new Camera([0, 0, 0], [400, 0 , 0]);
+        let camera = new Camera([0, 50, 50], [400, 0 , 0]);
         
         // let mjpMatrix = getMJP(sruX, sruY, windowX, windowY);
         let mjpMatrix = getInvertedMJP(sruX, sruY, windowX, windowY);
@@ -243,39 +250,52 @@ export default class Solid {
                 currentFaceEdges.push(edgeSlice2);
                 currentFaceEdges.push(edgeToSlice1);
                 const face = new Face(currentFaceEdges);
-                this.facesList.push(face);
+
+                if(face.isCounterClockwise()) {
+                    console.log("faceTesteLogica Verdadeiro: ", face);
+                    this.facesList.push(face);
+                    // tempFacesList.push(face);
+                } else {
+                    console.log("faceTesteLogica Falso: ", face);
+                    let newFace = this.reverseFace(face);
+
+                    // inverter aqui
+                    this.facesList.push(newFace);
+                
+                }
+                // this.facesList.push(face);
                 
             }
             console.log("SliceList: ", this.sliceList);
             console.log("drawWireframe: ", this.sliceList[0].vertexList[1].x, this.sliceList[0].vertexList[1].y, this.sliceList[1].vertexList[1].x, this.sliceList[1].vertexList[1].y);
-            this.drawFaceOK(ctx, this.facesList[i]);
-            if(this.testeVisibilidade(tempFacesList[i], camera.getVRP()) > 0){
+            // this.drawFaceOK(ctx, this.facesList[i]);
+            // if(this.testeVisibilidade(tempFacesList[i], camera.getVRP()) > 0){
                 
-                if (i < fatias - 1) {
-                    this.drawFaceOK(ctx, tempFacesList[i]); 
-                }
-                 else {
-                    this.drawFace(ctx, this.sliceList[i]); // Fecha o polígono
-                }
-            }
+            //     if (i < fatias - 1) {
+            //         this.drawFaceOK(ctx, tempFacesList[i]); 
+            //     }
+            //      else {
+            //         this.drawFace(ctx, this.sliceList[i]); // Fecha o polígono
+            //     }
+            // }
                         
         }
         // console.log("facesList: ", tempFacesList);
         let count = 0;
 
             // let result = this.testeVisibilidade(tempFacesList[i], camera.getVRP(), ctx, i);
-        // for(let i = 0; i < this.facesList.length; i++){
-        //     ctx.beginPath();
-        //         ctx.strokeStyle = "Black";
+        for(let i = 0; i < this.facesList.length; i++){
+            ctx.beginPath();
+                ctx.strokeStyle = "Black";
 
-        //         ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
-        //         this.facesList[i].listEdges.forEach(edge => {
-        //             console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
-        //             ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
-        //         });
-        //         ctx.closePath();
-        //         ctx.stroke();
-        // }
+                ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
+                this.facesList[i].listEdges.forEach(edge => {
+                    console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
+                    ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+                });
+                ctx.closePath();
+                ctx.stroke();
+        }
         this.drawVisibleFaces(ctx, camera, count);
         // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	
         // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	//gouroud
@@ -327,6 +347,53 @@ export default class Solid {
             // console.log(i + " Visibilidade: ", this.testeVisibilidade(tempFacesList[i], camera.getVRP()));
         }
     }
+    reverseFace(face) {
+        // Inverter a ordem dos vértices
+            // face.listEdges.reverse();
+        // while(!face.isCounterClockwise()) {
+
+        //     for (let i = 0; i < face.listEdges.length; i++) {
+        //         const edge = face.listEdges[i];
+        //         const tempVertexInit = edge.vertexInit;
+        //         edge.vertexInit = edge.vertexEnd;
+        //         edge.vertexEnd = tempVertexInit;
+        //         // Não é necessário inverter os vetores normalizados das arestas, já que a ordem dos vértices está sendo invertida
+        //         // Se necessário, essa lógica pode ser adicionada aqui
+        //     }
+        // }
+        let edgeSlice1 = new Edge(face.listEdges[0].vertexInit, face.listEdges[3].vertexInit, face.listEdges[0].edgeID);
+        let edgeToSlice2 = new Edge(face.listEdges[3].vertexInit, face.listEdges[2].vertexInit, face.listEdges[3].edgeID);
+        let edgeSlice2 = new Edge(face.listEdges[2].vertexInit, face.listEdges[1].vertexInit, face.listEdges[2].edgeID);
+        let edgeToSlice1 = new Edge(face.listEdges[1].vertexInit, face.listEdges[0].vertexInit, face.listEdges[1].edgeID);
+        const currentFaceEdges = [];
+        currentFaceEdges.push(edgeSlice1);
+        currentFaceEdges.push(edgeToSlice2);
+        currentFaceEdges.push(edgeSlice2);
+        currentFaceEdges.push(edgeToSlice1);
+        const newFace = new Face(currentFaceEdges);
+        // Recriar as arestas para manter a consistência da orientação
+
+        console.log("reverseFace: ", newFace.isCounterClockwise())
+        return face;
+    }
+
+    // reverseFace(face) {
+    //     // Inverter a ordem dos vértices
+    //     if (!face.isCounterClockwise()) {
+    //         face.listEdges.reverse();
+    
+    //         for (let i = 0; i < face.listEdges.length; i++) {
+    //             const edge = face.listEdges[i];
+    //             const tempVertexInit = edge.vertexInit;
+    //             edge.vertexInit = edge.vertexEnd;
+    //             edge.vertexEnd = tempVertexInit;
+    //             // Não é necessário inverter os vetores normalizados das arestas, já que a ordem dos vértices está sendo invertida
+    //             // Se necessário, essa lógica pode ser adicionada aqui
+    //         }
+    //     }
+    //     console.log("reverseFace: ", face.isCounterClockwise());
+    //     return face;
+    // }
 
     drawFaceOK(ctx, face) {
         if (!ctx) {
@@ -405,22 +472,32 @@ export default class Solid {
             const visibility = this.testeVisibilidade(this.facesList[i], camera.getVRP());
             if (visibility > 0) {
                 this.visibleFaceList.push(this.facesList[i]);
-                count++;
-                console.log("count: ", count, "face: ", this.facesList[i].centroide);
-                // Desenha a face apenas se for visível
-                ctx.beginPath();
-                ctx.strokeStyle = "Black";
+                // count++;
+                // console.log("count: ", count, "face: ", this.facesList[i].centroide);
+                // // Desenha a face apenas se for visível
+                // ctx.beginPath();
+                // ctx.strokeStyle = "Black";
 
-                ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
-                this.facesList[i].listEdges.forEach(edge => {
-                    console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
-                    ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
-                });
-                ctx.closePath();
+                // ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
+                // this.facesList[i].listEdges.forEach(edge => {
+                //     console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
+                //     ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+                // });
+                // ctx.closePath();
                 ctx.stroke();
             }
             else {
                 this.notVisibleFaceList.push(this.facesList[i]);
+                // ctx.beginPath();
+                // ctx.strokeStyle = "red";
+
+                // ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
+                // this.facesList[i].listEdges.forEach(edge => {
+                //     console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
+                //     ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+                // });
+                // ctx.closePath();
+                // ctx.stroke();
             }
         }
     }
