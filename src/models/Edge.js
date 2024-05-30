@@ -3,6 +3,8 @@ export default class Edge {
     vertexInitIllumination = [];
     vertexEnd = [];
     vertexEndIllumination = [];
+    edgeInitNormalizedVector = [];
+    edgeEndNormalizedVector = [];
     edgeID = null;
     constructor(vertexInit, vertexEnd, edgeID) {
         this.vertexInit = vertexInit;
@@ -15,6 +17,10 @@ export default class Edge {
     }
     setEndIlumination(endIlumination) {
         this.vertexEndIllumination = endIlumination;
+    }  
+    setNormalizedVertexVector(vector1, vector2) {
+        this.edgeInitNormalizedVector = vector1;
+        this.edgeEndNormalizedVector = vector2;  
     }
 
 }

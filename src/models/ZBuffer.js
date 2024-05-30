@@ -112,7 +112,7 @@ export default class ZBuffer {
 
         for (let currentY = this.viewPortY.min; currentY < this.viewPortY.max; currentY++) {
             let edge = intersections.get(currentY);
-            // console.log("edge: ", edge, "currentY: ", currentY);
+            console.log("edgeTesteFinal: ", edge, "currentY: ", currentY);
             for (let i = 0; i < edge.length; i+=2) {
                 let initialX = Math.ceil(edge[i].x);
                 let endX = Math.floor(edge[i + 1].x);

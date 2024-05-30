@@ -11,6 +11,8 @@ import ZBuffer from "./ZBuffer.js";
 import ConstantShade from "./ConstantShade.js";
 import GouroudShade from "./GouroudShade.js";
 import ZBufferGouraud from "./ZBufferGouroud.js";
+import ZBufferPhong from "./ZBufferPhong.js";
+import PhongShade from "./PhongShade.js";
 
 export default class Solid {
     facesList = [];
@@ -40,7 +42,7 @@ export default class Solid {
         let incrementRad = rad;
         let radX, radY, radZ;
         // this.sliceList[0].invertVertex(canvasHeight);
-        
+        console.log("sliceList: ", this.sliceList);
         let tempSliceList = this.sliceList;
         for (let i = 1; i < fatias; i++) {
             if (axis === 'x') {
@@ -61,6 +63,7 @@ export default class Solid {
             rad += incrementRad;
             
         }
+        console.log("testeWireframe: ", tempSliceList);
         for (let i = 0; i < fatias; i++) {
             let index = i;
             if(i == fatias-1) {
@@ -131,8 +134,9 @@ export default class Solid {
             min: 0,
             max: canvasHeight
         }
+        console.log("TEMPPOLYLIST: ", tempSliceList);
         // let camera = new Camera([120, 120, 120], [1, 100, 5]);  // paralelo frontal
-        let camera = new Camera([25, 15, 80], [20, 10, 25]);
+        let camera = new Camera([0, 0, 0], [400, 0 , 0]);
         
         // let mjpMatrix = getMJP(sruX, sruY, windowX, windowY);
         let mjpMatrix = getInvertedMJP(sruX, sruY, windowX, windowY);
@@ -147,10 +151,10 @@ export default class Solid {
         console.log("srcMatrix: ", srcMatrix);
 
         let auxMatrix = multiplyMatrices(mjpMatrix, projectionMatrix);
-        // console.log("auxMatrix: ", auxMatrix);
+        console.log("auxMatrix: ", auxMatrix);
 
         let matrixSRU_SRT = multiplyMatrices(auxMatrix, srcMatrix);
-        console.log("matrixSRU_SRT: ", matrixSRU_SRT);
+        // console.log("matrixSRU_SRT: ", matrixSRU_SRT);
 
         let auxSliceList = tempSliceList;
         // console.log("size: ", tempSliceList[0].vertexList.length)
@@ -166,12 +170,12 @@ export default class Solid {
                 let x = tempSliceList[i].vertexList[j].x;
                 let y = tempSliceList[i].vertexList[j].y;
                 let z = tempSliceList[i].vertexList[j].z;
-
+                console.log("teste do Z: ", z);
                 let auxPoints = [[x], 
                                  [y], 
                                  [z], 
                                  [1]];
-                // console.log("matrixSRU_SRT: ", matrixSRU_SRT);
+                console.log("matrixSRU_SRT: ", matrixSRU_SRT);
                 // console.log("auxPoints: ", auxPoints);
                 
                 let resultMatrix = multiplyMatrices(matrixSRU_SRT, auxPoints);
@@ -180,10 +184,14 @@ export default class Solid {
                 auxSliceList[i].vertexList[j].x = resultMatrix[0]/resultMatrix[3];
                 auxSliceList[i].vertexList[j].y = resultMatrix[1]/resultMatrix[3];
                 auxSliceList[i].vertexList[j].z = resultMatrix[2][0];
+                console.log("aux teste do zaza :",  auxSliceList[i].vertexList[j].x,  auxSliceList[i].vertexList[j].y, auxSliceList[i].vertexList[j].z)
                 
             }
         }
         this.sliceList = auxSliceList;
+        // for(let i = 0; i < this.sliceList.length; i++){
+        //     this.sliceList[i].drawPolygon(ctx);
+        // }
         console.log("sliceList: ", this.sliceList);
 
         let teste1 = this.sliceList[0].vertexList[0+1];
@@ -238,40 +246,61 @@ export default class Solid {
                 this.facesList.push(face);
                 
             }
-
+            console.log("SliceList: ", this.sliceList);
             console.log("drawWireframe: ", this.sliceList[0].vertexList[1].x, this.sliceList[0].vertexList[1].y, this.sliceList[1].vertexList[1].x, this.sliceList[1].vertexList[1].y);
+            // this.drawFaceOK(ctx, this.facesList[i]);
             // if(this.testeVisibilidade(tempFacesList[i], camera.getVRP()) > 0){
                 
-                //     if (i < fatias - 1) {
-                    //         this.drawWireframe2(ctx, this.sliceList[i], this.sliceList[i + 1], i); 
-                    
-                    //     } else {
-                        //         this.drawWireframe2(ctx, this.sliceList[i], this.sliceList[0], 1); // Fecha o polígono
-                        //     }
-                        // }
+            //     if (i < fatias - 1) {
+            //         this.drawFaceOK(ctx, tempFacesList[i]); 
+            //     }
+            //     // } else {
+            //     //     this.drawFace(ctx, this.sliceList[i]); // Fecha o polígono
+            //     // }
+            // }
                         
         }
+        // console.log("facesList: ", tempFacesList);
         let count = 0;
 
             // let result = this.testeVisibilidade(tempFacesList[i], camera.getVRP(), ctx, i);
+        // for(let i = 0; i < this.facesList.length; i++){
+        //     ctx.beginPath();
+        //         ctx.strokeStyle = "Black";
+
+        //         ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
+        //         this.facesList[i].listEdges.forEach(edge => {
+        //             console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
+        //             ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+        //         });
+        //         ctx.closePath();
+        //         ctx.stroke();
+        // }
         this.drawVisibleFaces(ctx, camera, count);
-        let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	
+        // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	
         // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	//gouroud
+        let L = {vector : [-1100, 500, 300], Il : [233, 200, 99]};	
 
         
 
         let zBufferFrame = Array.from({ length: windowY.max }, () => Array.from({ length: windowX.max }, () => null));
 
         for(let i = 0; i < this.visibleFaceList.length; i++){
-            let material = this.getMaterial();
+            // let material = this.getMaterial();
             // let constantShade = new ConstantShade([120, 160, 200], L, this.visibleFaceList[i], camera, material);
             // constantShade.constantRun();
-            let gouroudShade = new GouroudShade([120, 160, 200], L, this.visibleFaceList[i], camera, material, this.facesList);
-            gouroudShade.gouroudRun();
             // let zBuffer = new ZBuffer(windowX, windowY, this.visibleFaceList[i]);
             // zBuffer.render(ctx, zBufferFrame, this.color);
-            let zBufferGouraud = new ZBufferGouraud(windowX, windowY, this.visibleFaceList[i]);
-            zBufferGouraud.render(ctx, zBufferFrame, this.color);
+            // let gouroudShade = new GouroudShade([120, 160, 200], L, this.visibleFaceList[i], camera, material, this.facesList);
+            // gouroudShade.gouroudRun();
+            // let zBufferGouraud = new ZBufferGouraud(windowX, windowY, this.visibleFaceList[i]);
+            // zBufferGouraud.render(ctx, zBufferFrame, this.color);
+
+            // let phongShade = new PhongShade([120, 160, 200], L, this.visibleFaceList[i], camera, material, this.facesList);
+
+            // let zBufferPhong = new ZBufferPhong(windowX, windowY, this.visibleFaceList[i]);
+            // zBufferPhong.render(ctx, zBufferFrame, phongShade, this.facesList, L, camera);
+
             // console.log("zbuffer " + i + ": ", zBuffer.getFace());
         }
 
@@ -299,19 +328,35 @@ export default class Solid {
         }
     }
 
+    drawFaceOK(ctx, face) {
+        if (!ctx) {
+            console.error("Canvas context (ctx) is undefined");
+            return;
+        }
+        ctx.beginPath();
+        ctx.strokeStyle = "black";
+        face.listEdges.forEach(edge => {
+            ctx.moveTo(edge.vertexInit.x, edge.vertexInit.y);
+            ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+        });
+        ctx.closePath();
+        ctx.stroke();
+    }
+
     testeVisibilidade(face, vrp, ctx, index) {
-        const x = vrp[0] - face.centroide[0] / Math.pow(vrp[0] - face.centroide[0], 2);
-        const y = vrp[1] - face.centroide[1] / Math.pow(vrp[1] - face.centroide[1], 2);
-        const z = vrp[2] - face.centroide[2] / Math.pow(vrp[2] - face.centroide[2], 2);
+        const x = (vrp[0] - face.centroide[0]); // (Math.pow(vrp[0] - face.centroide[0], 2));
+        const y = (vrp[1] - face.centroide[1]); // (Math.pow(vrp[1] - face.centroide[1], 2));
+        const z = (vrp[2] - face.centroide[2]); // (Math.pow(vrp[2] - face.centroide[2], 2));
         const O = [x, y, z];
         const oNormalized = normalizarVetor(O)
         // console.log("o: ", O);
-        console.log("normal: ", face.getNormal());
+        console.log("oNormalizado: ", oNormalized, " face normal: ", face.getNormal());
 
         const result = produtoEscalar(oNormalized, face.getNormal());
-        if(result > 0){
-            this.drawFaces(ctx, index);
-        }
+        console.log("RESULTTODO: ", result);
+        // if(result > 0){
+        //     this.drawFaces(ctx, index);
+        // }
         return result;
     }
         
@@ -364,10 +409,11 @@ export default class Solid {
                 console.log("count: ", count, "face: ", this.facesList[i].centroide);
                 // Desenha a face apenas se for visível
                 ctx.beginPath();
-                ctx.strokeStyle = this.getRandomColor();
+                ctx.strokeStyle = "Black";
 
                 ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
                 this.facesList[i].listEdges.forEach(edge => {
+                    console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
                     ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
                 });
                 ctx.closePath();

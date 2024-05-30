@@ -1,4 +1,4 @@
-export default class Phong {
+export default class PhongShade {
     ambientLight;
     camera;
 
@@ -78,18 +78,9 @@ export default class Phong {
         return v1.x === v2.x && v1.y === v2.y && v1.z === v2.z;
     }
 
-    getH(v1, v2) {
-        let h = [];
-        h = this.sumVectors(v1, v2);
-        let x = h[0]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
-        let y = h[1]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
-        let z = h[2]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
-        h = [x, y, z];
 
-        return h;
-    }
 
-    phongRun(vertexNormalized, h, interpolationY, interpolationX) {
+    phongRun(vertexNormalized, h, Lnormal) {
         this.setAmbientLighting();
 
 
@@ -97,13 +88,14 @@ export default class Phong {
         let totalIlumination = [];
         console.log("vertexNormalized: ", vertexNormalized);
 
-        console.log("Lnormal FINAL: ", Lnormal);
         
             console.log("this.L.vecto1: ", this.L.vector);
-            console.log("verticesFromFace[i]: ", verticesFromFace[i]);
+            // console.log("verticesFromFace[i]: ", verticesFromFace[i]);
             let totalR, totalG, totalB;
-            console.log("vertexNormalized FINAL: ", vertexNormalized[i]);
-            const test = this.produtoEscalar(vertexNormalized[i], Lnormal);
+            // console.log("vertexNormalized FINAL: ", vertexNormalized[i]);
+            console.log("VERTEXNORMALIZED: ", vertexNormalized);
+            const test = this.produtoEscalar(vertexNormalized, Lnormal);
+            console.log("Lnormal FINAL: ", Lnormal);
             console.log("test FINAL: ", test);
             if (test > 0) {
                 let LDr = this.L.Il[0] * this.material.kd[0] * test;
@@ -113,11 +105,11 @@ export default class Phong {
                 console.log("PHONG: LD FINAL: ", LD);
 
 
-                let r = this.multiplyScalarByVector((test * 2), this.subtractVectors(vertexNormalized[i], Lnormal));
-                console.log("r FINAL: ", r);
+                // let r = this.multiplyScalarByVector((test * 2), this.subtractVectors(vertexNormalized[i], Lnormal));
+                // console.log("r FINAL: ", r);
 
 
-                let NH = this.produtoEscalar(vertexNormalized[i], h);
+                let NH = this.produtoEscalar(vertexNormalized, h);
                 console.log("NH FINAL: ", NH);
                 if(NH){
                     let LSr = this.L.Il[0] * this.material.ks[0] * Math.pow(NH, this.material.n);
@@ -136,18 +128,18 @@ export default class Phong {
                     totalB = this.ambientLighting[2] + LD[2];
 
                 }
-                totalIlumination[i] = [totalR, totalG, totalB];
+                totalIlumination = [totalR, totalG, totalB];
             } else {
-                totalIlumination[i] = this.ambientLighting;
+                totalIlumination = this.ambientLighting;
             }
             console.log("")
-            this.totalIlumination[i] = totalIlumination[i];
+            this.totalIlumination = totalIlumination;
             
 
         
-        this.face.setGouroudIllumination(totalIlumination, interpolationY, interpolationX);
-        console.log("PHONG: totalIllumination Final: ", totalIlumination);
-
+        // this.face.setGouroudIllumination(totalIlumination, interpolationY, interpolationX);
+            console.log("PHONG: totalIllumination Final: ", totalIlumination);
+            return totalIlumination;
 
 
     }
