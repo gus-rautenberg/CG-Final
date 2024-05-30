@@ -20,13 +20,13 @@ export default class Face {
 
     calcNormal() {
         let p3 = this.listEdges[1].vertexEnd;
-        // console.log("p3: ", p3);
         let p2 = this.listEdges[1].vertexInit;
         let p1 = this.listEdges[0].vertexInit;
+        console.log("p1: ", p1, "p2: ", p2, "p3: ", p3);
         let A = this.subtractVectors(p1, p2);
         let B = this.subtractVectors(p3, p2);
         let C = this.crossProduct(B, A);
-        // console.log("C: ", C);
+        console.log("aaC: ", C);    
         return C;
     }
 

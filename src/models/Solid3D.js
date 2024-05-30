@@ -248,16 +248,16 @@ export default class Solid {
             }
             console.log("SliceList: ", this.sliceList);
             console.log("drawWireframe: ", this.sliceList[0].vertexList[1].x, this.sliceList[0].vertexList[1].y, this.sliceList[1].vertexList[1].x, this.sliceList[1].vertexList[1].y);
-            // this.drawFaceOK(ctx, this.facesList[i]);
-            // if(this.testeVisibilidade(tempFacesList[i], camera.getVRP()) > 0){
+            this.drawFaceOK(ctx, this.facesList[i]);
+            if(this.testeVisibilidade(tempFacesList[i], camera.getVRP()) > 0){
                 
-            //     if (i < fatias - 1) {
-            //         this.drawFaceOK(ctx, tempFacesList[i]); 
-            //     }
-            //     // } else {
-            //     //     this.drawFace(ctx, this.sliceList[i]); // Fecha o polígono
-            //     // }
-            // }
+                if (i < fatias - 1) {
+                    this.drawFaceOK(ctx, tempFacesList[i]); 
+                }
+                 else {
+                    this.drawFace(ctx, this.sliceList[i]); // Fecha o polígono
+                }
+            }
                         
         }
         // console.log("facesList: ", tempFacesList);
