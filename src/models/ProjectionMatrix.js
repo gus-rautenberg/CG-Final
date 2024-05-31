@@ -23,7 +23,7 @@ export function getPerspectiveMatrix(camera)
     let nNormalized = camera.getNNormalized();
     let dp_distance = vrp[2]-zvp;
     // let dp_distance = 100;
-    console.log("DISTANCIOA: ", dp_distance);
+    // console.log("DISTANCIOA: ", dp_distance);
     
     let xvpSRU = vrp[0] + (dp_distance * -nNormalized[0]);
     let yvpSRU = vrp[1] + (dp_distance * -nNormalized[1]);
@@ -32,27 +32,27 @@ export function getPerspectiveMatrix(camera)
         [yvpSRU, vrp[1]], 
         [zvpSRU, vrp[2]], 
         [1, 1]];
-    console.log("matrixPoints: ", matrixPoints);
+    // console.log("matrixPoints: ", matrixPoints);
 
     let points = multiplyMatrices(srcMatrix, matrixPoints)
-    console.log("points: ", points);
+    // console.log("points: ", points);
 
     zvp = points[2][0];
     let zprp = points[2][1];
-    console.log("zvp: ", zvp);
+    // console.log("zvp: ", zvp);
 
-    console.log("dp_distance: ", dp_distance);
+    // console.log("dp_distance: ", dp_distance);
     let value1 = (-zvp / dp_distance);
-    console.log("value1: ", value1);
+    // console.log("value1: ", value1);
 
     let value2 = zvp * (zprp / dp_distance);
-    console.log("value2: ", value2);
+    // console.log("value2: ", value2);
 
     let value3 = -1/dp_distance;
-    console.log("value3: ", value3);
+    // console.log("value3: ", value3);
 
     let value4 = zprp / dp_distance;
-    console.log("value4: ", value4);
+    // console.log("value4: ", value4);
 
     matrix =[ [1, 0, 0, 0],
         [0, 1, 0, 0],

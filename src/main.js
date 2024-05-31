@@ -8,6 +8,27 @@ canva2D.width = 1000; //16
 canva2D.height = 500; //12
 console.log("canva2D: ", canva2D.clientWidth, canva2D.clientHeight);
 
+const dropdownButtons = document.querySelectorAll('.dropbtn');
+const dropdownContents = document.querySelectorAll('.dropdown-content');
+
+// Add click event to each dropdown button
+dropdownButtons.forEach((button, index) => {
+    button.addEventListener('click', () => {
+        // Toggle the 'show' class on the corresponding dropdown content
+        dropdownContents[index].classList.toggle('show');
+    });
+});
+
+// Close the dropdowns if the user clicks outside of them
+window.addEventListener('click', (event) => {
+    if (!event.target.matches('.dropbtn')) {
+        dropdownContents.forEach((content) => {
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+            }
+        });
+    }
+});
 let polyID = 1;
 // Obter o elemento <canvas> criado pela instância de Canva
 // const canva2D = canva2D.getCanvas();

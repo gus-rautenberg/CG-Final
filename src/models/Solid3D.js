@@ -392,43 +392,18 @@ export default class Solid {
         //         ctx.stroke();
         // }
 
+        //WIREFRAME
+
         // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	
-        let L = {vector : [1050, -500, -900], Il : [170, 140, 120]};	//gouroud
         // let L = {vector : [-10000, 300, 500], Il : [233, 100, 200]};	
 
-        console.log("newTempFaceList: ", newTempFaceList);
+        // console.log("newTempFaceList: ", newTempFaceList);
 
-        let zBufferFrame = Array.from({ length: windowY.max }, () => Array.from({ length: windowX.max }, () => null));
 
-        for(let i = 0; i < newVisibleFaceList.length; i++){
-            let material = this.getMaterial();
-            // let constantShade = new ConstantShade([120, 160, 200], L, newVisibleFaceList[i], camera, material);
-            // constantShade.constantRun();
-            // let zBuffer = new ZBuffer(windowX, windowY, newVisibleFaceList[i]);
-            // zBuffer.render(ctx, zBufferFrame, this.color);
-            // let gouroudShade = new GouroudShade([120, 160, 200], L, newVisibleFaceList[i], camera, material, newTempFaceList);
-            // gouroudShade.gouroudRun();
-            // let zBufferGouraud = new ZBufferGouraud(windowX, windowY, newVisibleFaceList[i]);
-            // zBufferGouraud.render(ctx, zBufferFrame, this.color);
-
-            let phongShade = new PhongShade([120, 160, 200], L, newVisibleFaceList[i], camera, material, newTempFaceList);
-
-            let zBufferPhong = new ZBufferPhong(windowX, windowY, newVisibleFaceList[i]);
-            zBufferPhong.render(ctx, zBufferFrame, phongShade, newTempFaceList, L, camera);
-
-            // console.log("zbuffer " + i + ": ", zBuffer.getFace());
-        }
-
-        for (let currentY = windowY.min; currentY < windowY.max; currentY++) {
-            for(let currentX = windowX.min; currentX < windowX.max; currentX++) {
-                if (zBufferFrame[currentY][currentX] != null) {
-                    ctx.fillStyle = zBufferFrame[currentY][currentX].color;
-                    ctx.fillRect(currentX, currentY, 1, 1);
-                }
-            }
-        }
+       
         // this.drawVisibleFaces(ctx, camera, count);
-
+        let type = "gouraud"
+        this.shading(ctx, type, windowX, windowY, camera, newVisibleFaceList, newTempFaceList);
 
         
         // console.log(this.facesList);
@@ -441,6 +416,59 @@ export default class Solid {
         for(let i = 0; i < tempFacesList.length; i++){
             // console.log(i + " Visibilidade: ", this.testeVisibilidade(tempFacesList[i], camera.getVRP()));
         }
+    }
+
+    shading(ctx, type, windowX, windowY, camera, newVisibleFaceList, newTempFaceList) {
+
+        let L = {vector : [1050, -500, -900], Il : [170, 140, 120]};	//gouroud
+        let zBufferFrame = Array.from({ length: windowY.max }, () => Array.from({ length: windowX.max }, () => null));
+        
+
+
+        if(type === "constante") {
+            for(let i = 0; i < newVisibleFaceList.length; i++){
+                let material = this.getMaterial();
+                let constantShade = new ConstantShade([120, 160, 200], L, newVisibleFaceList[i], camera, material);
+                constantShade.constantRun();
+                let zBuffer = new ZBuffer(windowX, windowY, newVisibleFaceList[i]);
+                zBuffer.render(ctx, zBufferFrame, this.color);
+                
+            }
+
+        }
+        else if(type === "gouraud") {
+            for(let i = 0; i < newVisibleFaceList.length; i++){
+                let material = this.getMaterial();
+
+                let gouroudShade = new GouroudShade([120, 160, 200], L, newVisibleFaceList[i], camera, material, newTempFaceList);
+                gouroudShade.gouroudRun();
+                let zBufferGouraud = new ZBufferGouraud(windowX, windowY, newVisibleFaceList[i]);
+                zBufferGouraud.render(ctx, zBufferFrame, this.color);
+    
+            }
+        }
+        else if(type === "phong") {
+            for(let i = 0; i < newVisibleFaceList.length; i++){
+                let material = this.getMaterial();
+
+                let phongShade = new PhongShade([120, 160, 200], L, newVisibleFaceList[i], camera, material, newTempFaceList);
+    
+                let zBufferPhong = new ZBufferPhong(windowX, windowY, newVisibleFaceList[i]);
+                zBufferPhong.render(ctx, zBufferFrame, phongShade, newTempFaceList, L, camera);
+    
+                console.log("zbuffer " + i + ": ", zBuffer.getFace());
+            }
+        }
+
+        for (let currentY = windowY.min; currentY < windowY.max; currentY++) {
+            for(let currentX = windowX.min; currentX < windowX.max; currentX++) {
+                if (zBufferFrame[currentY][currentX] != null) {
+                    ctx.fillStyle = zBufferFrame[currentY][currentX].color;
+                    ctx.fillRect(currentX, currentY, 1, 1);
+                }
+            }
+        }
+    
     }
     reverseFace(face) {
         // Inverter a ordem dos vértices
