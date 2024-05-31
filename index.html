@@ -9,9 +9,144 @@
 </head>
 <body class="dark-mode">
     <canvas id="canvas2D"></canvas>
-    <canvas id="canvas3D"></canvas>
+    <div id="controls">
+        <div class="navbar">
+            <div class="option">
+                <span>Tela:</span>
+                <input type="number" id="windowXMax" placeholder="X">
 
+                <input type="number" id="windowYMax" placeholder="Y">
+
+            </div>
+            <div class="option">
+                <span>Viewport:</span>
+                <input type="number" id="viewportXMax" placeholder="X">
+
+                <input type="number" id="viewportYMax" placeholder="Y">
+            </div>
+            <div class="option">
+                <span>Visão:</span>
+                <div>
+                    <label><input type="radio" name="vision" value="paralela"> Visão Paralela</label>
+                    <label><input type="radio" name="vision" value="perspectiva"> Visão Perspectiva</label>
+                </div>
+            </div>
+            <div class="option">
+                <span>Camera:</span>
+                <input type="number" id="cameraX" placeholder="X">
+                <input type="number" id="cameraY" placeholder="Y">
+                <input type="number" id="cameraZ" placeholder="Z">
+            </div>
+            <div class="option">
+                <span>Ponto Focal:</span>
+                <input type="number" id="pX" placeholder="X">
+                <input type="number" id="pY" placeholder="Y">
+                <input type="number" id="pZ" placeholder="Z">
+            </div>
+            <div class="option">
+                <span>Sombreamento:</span>
+                <div>
+                    <label><input type="radio" name="shadingType" value="constante"> Constante</label>
+                    <label><input type="radio" name="shadingType" value="gouraud"> Gouraud</label>
+                    <label><input type="radio" name="shadingType" value="phong"> Phong</label>
+                </div>
+                <div>
+                    <span>Lâmpada XYZ:</span>
+                    <input type="number" id="lampX" placeholder="1050">
+                    <input type="number" id="lampY" placeholder="-500">
+                    <input type="number" id="lampZ" placeholder="-900">
+                </div>
+                <div>
+                    <span>Iluminação Ambiente RGB:</span>
+                    <input type="number" id="iaR" placeholder="120">
+                    <input type="number" id="iaG" placeholder="160">
+                    <input type="number" id="iaB" placeholder="200">
+                </div>
+                <div>
+                    <span>Intensidade de Iluminação RGB:</span>
+                    <input type="number" id="ilR" placeholder="170">
+                    <input type="number" id="ilG" placeholder="140">
+                    <input type="number" id="ilB" placeholder="120">
+                </div>
+            </div>
+            <div class="option">
+                <span>Sólido:</span>
+                <div>
+                    <span>Quantidade de Fatias:</span>
+                    <input type="number" id="slices" min="3">
+                </div>
+                <div class="option">
+                    <span>Eixo Rotacao:</span>
+                    <div>
+                        <label><input type="radio" name="rotationAxis" value="x"> Eixo X </label>
+                        <label><input type="radio" name="rotationAxis" value="y"> Eixo Y </label>
+                        <label><input type="radio" name="rotationAxis" value="z"> Eixo Z </label>
+                    </div>
+                </div>
+                <div>
+                    <span>Material:</span>
+                    <div>
+                        <span>Ka (Ambiente):</span>
+                        <input type="number" id="kaR" placeholder="R = 0.97">
+                        <input type="number" id="kaG" placeholder="G = 0.34">
+                        <input type="number" id="kaB" placeholder="B = 0.6">
+                    </div>
+                    <div>
+                        <span>Kd (Difuso):</span>
+                        <input type="number" id="kdR" placeholder="R = 0.7">
+                        <input type="number" id="kdG" placeholder="G = 0.5">
+                        <input type="number" id="kdB" placeholder="B = 0.7">
+                    </div>
+                    <div>
+                        <span>Ks (Especular):</span>
+                        <input type="number" id="ksR" placeholder="R = 0.67">
+                        <input type="number" id="ksG" placeholder="G = 0.3">
+                        <input type="number" id="ksB" placeholder="B = 0.6">
+                    </div>
+                    <div>
+                        <span>N:</span>
+                        <input type="number" id="nValue" placeholder="N = 100">
+                    </div>
+                </div>
+            </div>
+            <div class="option">
+                <span>Translacão:</span>
+                <input type="number" id="translateX" placeholder="X">
+                <input type="number" id="translateY" placeholder="Y">
+                <input type="number" id="translateZ" placeholder="Z">
+                <button id="translateSolid">Transladar</button>
+            </div>
+            <div class="option">
+                <span>Escala:</span>
+                <input type="number" id="escaleX" placeholder="X">
+                <input type="number" id="escaleY" placeholder="Y">
+                <input type="number" id="escaleZ" placeholder="Z">
+                <button id="translateSolid">Transladar</button>
+            </div>
+            <div class="option">
+                <span>Rotacao:</span>
+                <div><button id="rotateX">Rotacionar em X</button>
+                <button id="rotateXMinus">Rotacionar em -X</button></div>
+
+                <div><button id="rotateY">Rotacionar em Y</button>
+                <button id="rotateYMinus">Rotacionar em -Y</button></div>
+
+                <div><button id="rotateZ">Rotacionar em Z</button>
+                    <button id="rotateZMinus">Rotacionar em -Z</button></div>
+
+            </div>
+        </div>
+    </div>
+    <button id="createScreenButton">Criar Tela</button>
+    <button id="resetCanvasButton">Restaurar Canvas</button>
+
+    <button id="wireframeButton">Wireframe</button>
+    <button id="shadingButton">Sombreamento</button>
+
+    <!-- <button id="translateButtonUP">UP</button>
+    <button id="translateButtonD">Down</button>
+    <button id="translateButtonL">Left</button>
+    <button id="translateButtonR">Right</button> -->
     <script type="module" src="./src/main.js"></script>
 </body>
 </html>
-

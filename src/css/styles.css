@@ -1,15 +1,20 @@
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* Alinha os itens no topo */
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Alinha os itens no topo */
+  margin: 0; /* Remove margens padrão */
 }
 
 canvas {
+    margin-top: 10px;
+    margin-left: 10px;
     border: 1px solid #000;
     margin-right: 10px; /* Adiciona margem à direita do canvas */
     background-color: #8c92ac;
     cursor: crosshair;
+    /* width:100vw;
+    height:100vh; */
     /* #ECEBE9; */
   }
 
@@ -17,26 +22,69 @@ button {
   cursor: pointer;
 }
 
-#controls {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
+
+
+.dark-mode {
+  background-color: #151626; /* Cor de fundo escura */
+  color: #ffffff; /* Cor do texto clara */
 }
 
-#triangleTableContainer {
-    align-items: flex-start;
-    background-color: #8c92ac;
-    overflow-y: auto; /* Adiciona scrollbar vertical quando necessário */
-    border: 1px solid #000;
-    width: 400px; /* Define uma largura fixa para a tabela */
-    height: 600px; /* Define uma altura fixa para a tabela */
-    margin-bottom: 10px; /* Adiciona margem inferior à tabela */
-  }
-  #triangleTable {
-    width: 100%; /* Largura agora é 100% do contêiner */
-  }
-/* Estilo para o modo noturno */
-body.dark-mode {
-    background-color: #151626; /* Cor de fundo escura */
-    color: #ffffff; /* Cor do texto clara */
+.navbar {
+  background-color: #333; /* Cor de fundo da navbar */
+  padding: 10px; /* Adiciona espaçamento interno */
+}
+
+.option {
+  margin-bottom: 10px; /* Adiciona espaçamento inferior entre opções */
+}
+
+.option span {
+  margin-right: 10px; /* Adiciona espaçamento à direita do texto */
+}
+
+.option input[type="number"] {
+  width: 60px; /* Define uma largura para os inputs numéricos */
+}
+
+.option > div {
+  margin-top: 5px; /* Adiciona espaçamento superior entre elementos */
+}
+
+.option > div > span {
+  margin-right: 5px; /* Adiciona espaçamento à direita do texto dentro de divs aninhadas */
+}
+.option > div > input[type="number"] {
+  width: 50px; /* Define uma largura para os inputs numéricos dentro de divs aninhadas */
+}
+
+.option > div > label {
+  margin-right: 10px; /* Adiciona espaçamento à direita das labels dentro de divs aninhadas */
+}
+
+#createScreenButton, #wireframeButton, #shadingButton, #resetCanvasButton {
+  position: fixed;
+  bottom: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 999;
+}
+
+#createScreenButton {
+  left: calc(50% - 500px); /* Ajuste para posicionar à esquerda */
+}
+#resetCanvasButton {
+  left: calc(50% - 250px);
+}
+
+#wireframeButton {
+  left: calc(50% + 250px); /* Ajuste para posicionar à esquerda */
+}
+
+#shadingButton {
+  left: calc(50% + 500px); /* Ajuste para posicionar à esquerda */
 }
