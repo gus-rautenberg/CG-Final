@@ -47,14 +47,13 @@ export default class ZBuffer {
         }
         
         this.face.listEdges.forEach(edge => {
-            let [dX, dZ] = this.calcDAndT(edge);
             let [yMinEdge, yMaxEdge, xMinEdge, xMaxEdge] = this.findEdgeMinMax(edge);
-
+            
             // let x = edge.vertexInit.x;
             // let z = edge.vertexInit.z;
-
+            
             let initialY, endY, currentX, currentR, currentG, currentB, currentZ;
-    
+            
             if (edge.vertexInit.y < edge.vertexEnd.y) { //talvez mudar para <
                 initialY = Math.ceil(edge.vertexInit.y);
                 endY = Math.floor(edge.vertexEnd.y);
@@ -73,8 +72,13 @@ export default class ZBuffer {
                 // currentB = edge.vertexEnd.extractRGB().b;
             }
             console.log("initialY: ", initialY, "endY: ", endY);
+            let [dX, dZ] = this.calcDAndT(edge);
+
             for (let y = initialY; y <= endY; y++) {
                 // console.log("y: ", y);
+                if(intersections.get(y) == undefined) {
+                    intersections.set(y, []);
+                }
                 intersections.get(y).push({ x: currentX, z: currentZ });
                 // console.log("x: ", currentX, "z: ", currentZ);
                 // console.log("intersections.get", intersections.get(y));
@@ -113,13 +117,15 @@ export default class ZBuffer {
         for (let currentY = this.viewPortY.min; currentY < this.viewPortY.max; currentY++) {
             let edge = intersections.get(currentY);
             console.log("edgeTesteFinal: ", edge, "currentY: ", currentY);
-            for (let i = 0; i < edge.length; i+=2) {
+            for (let i = 0; i < edge.length-1; i+=2) {
                 let initialX = Math.ceil(edge[i].x);
                 let endX = Math.floor(edge[i + 1].x);
                 let currentZ = edge[i].z;
+
                 let tZX = (edge[i + 1].z - edge[i].z) / (edge[i + 1].x - edge[i].x);
+                
                 console.log("currentZ: ", currentZ);
-                for (let currentX = initialX; currentX < endX; currentX++) {
+                for (let currentX = initialX; currentX <= endX; currentX++) {
                     // console.log("currentX: ", currentX, "currentZ: ", currentZ);    
                     // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
                     if(zBuffer[currentY][currentX] == null) {

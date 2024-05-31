@@ -3,24 +3,21 @@ import ZBuffer from "./ZBuffer.js";
 export default class ZBufferGouraud extends ZBuffer{
 
 
-    render(ctx, zBuffer, solidColor) {
-        console.log("SolidColor: ", solidColor, " iluConstant: ", this.face.getIluminationFaceConstant());
+    render(ctx, zBuffer) {
 
         let colorRGB;
 
-        // let colorRGB = `rgb(${colorR}, ${colorG}, ${colorB})`;
         
         let intersections = new Map();
-        console.log("face: ", this.face);
-        console.log("viewPort: ", this.viewPortY.min, this.viewPortY.max);
+        // console.log("face: ", this.face);
+        // console.log("viewPort: ", this.viewPortY.min, this.viewPortY.max);
         
         for (let y = this.viewPortY.min; y < this.viewPortY.max; y++) {
             intersections.set(y, []);
         }
         
         this.face.listEdges.forEach(edge => {
-            console.log("edge: ", edge);
-            let [dX, dZ] = this.calcDAndT(edge);
+            // console.log("edgeGouraud: ", edge);
             let [yMinEdge, yMaxEdge, xMinEdge, xMaxEdge] = this.findEdgeMinMax(edge);
 
             // let x = edge.vertexInit.x;
@@ -28,7 +25,7 @@ export default class ZBufferGouraud extends ZBuffer{
             let currentIlluminationR, currentIlluminationG, currentIlluminationB;
             let lastIlluminationR, lastIlluminationG, lastIlluminationB;
             let initialY, endY, currentX, currentR, currentG, currentB, currentZ;
-            console.log("RGB", edge.vertexInitIllumination[0], edge.vertexInitIllumination[1], edge.vertexInitIllumination[2]);
+            // console.log("RGBColor", edge.vertexInitIllumination[0], edge.vertexInitIllumination[1], edge.vertexInitIllumination[2]);
             if (edge.vertexInit.y < edge.vertexEnd.y) { //talvez mudar para <
                 initialY = Math.ceil(edge.vertexInit.y);
                 endY = Math.floor(edge.vertexEnd.y);
@@ -53,11 +50,17 @@ export default class ZBufferGouraud extends ZBuffer{
                 lastIlluminationG = edge.vertexInitIllumination[1];
                 lastIlluminationB = edge.vertexInitIllumination[2];
             }
+
+            let [dX, dZ] = this.calcDAndT(edge);
+
             let [rateR, rateG, rateB] = this.calcIlluminationRateRGB(edge);
 
-            console.log("initialY: ", initialY, "endY: ", endY);
+            // console.log("initialY: ", initialY, "endY: ", endY);
             for (let y = initialY; y <= endY; y++) {
                 // console.log("y: ", y);
+                if(intersections.get(y) == undefined) {
+                    intersections.set(y, []);
+                }
                 intersections.get(y).push({ x: currentX, z: currentZ, rateIlluminationR: currentIlluminationR, rateIlluminationG: currentIlluminationG, rateIlluminationB: currentIlluminationB });
                 // console.log("x: ", currentX, "z: ", currentZ);
                 // console.log("intersections.get", intersections.get(y));
@@ -67,40 +70,28 @@ export default class ZBufferGouraud extends ZBuffer{
                 currentIlluminationG += rateG;
                 currentIlluminationB += rateB;
             }
-            console.log("intersections(162): ", intersections.get(162));
+            // console.log("intersections(162): ", intersections.get(162));
             
         
         });
 
-        console.log("intersectionsAntes: ", intersections);
+        // console.log("intersectionsAntes: ", intersections);
         intersections.forEach((sortX) => {
             const sortedX = sortX.slice().sort((a, b) => a.x - b.x);
             sortX.splice(0, sortX.length, ...sortedX);
         });
 
-        console.log("intersectionsTUDO: ", intersections);
-
-
-        // let zBuffer;
-        // for(let y = Math.ceil(this.viewPortY.min); y < Math.floor(this.viewPortY.max); y++) {
-        //     for(let currentX = Math.ceil(this.viewPortY.min); currentX < Math.floor(this.viewPortY.max); currentX++) {
-        //         zBuffer[y][currentX] = null;
-        //     }
-        // }
-        // let zBuffer = Array.from({ length: this.viewPortY.max }, () => Array.from({ length: this.viewPortX.max }, () => null));
-
-        // console.log("zBuffer: ", zBuffer);
-
 
         for (let currentY = this.viewPortY.min; currentY < this.viewPortY.max; currentY++) {
             let edge = intersections.get(currentY);
             // console.log("edge: ", edge, "currentY: ", currentY);
-            for (let i = 0; i < edge.length; i+=2) {
+            for (let i = 0; i < edge.length-1; i+=2) {
                 let initialX = Math.ceil(edge[i].x);
                 let endX = Math.floor(edge[i + 1].x);
+                console.log("initialX: ", initialX, "endX: ", endX);
                 let currentZ = edge[i].z;
                 let tZX = (edge[i + 1].z - edge[i].z) / (edge[i + 1].x - edge[i].x);
-                console.log("currentIllumination: ", edge[i].rateIlluminationR, edge[i].rateIlluminationG, edge[i].rateIlluminationB);
+                // console.log("currentIllumination: ", edge[i].rateIlluminationR, edge[i].rateIlluminationG, edge[i].rateIlluminationB);
                 let currentIlluminationR = edge[i].rateIlluminationR;
                 let currentIlluminationG = edge[i].rateIlluminationG;
                 let currentIlluminationB = edge[i].rateIlluminationB;
@@ -109,8 +100,8 @@ export default class ZBufferGouraud extends ZBuffer{
                 let rateG = (edge[i + 1].rateIlluminationG - edge[i].rateIlluminationG) / (edge[i + 1].x - edge[i].x);
                 let rateB = (edge[i + 1].rateIlluminationB - edge[i].rateIlluminationB) / (edge[i + 1].x - edge[i].x);
 
-                console.log("currentZ: ", currentZ);
-                for (let currentX = initialX; currentX < endX; currentX++) {
+                // console.log("currentZ: ", currentZ);
+                for (let currentX = initialX; currentX <= endX; currentX++) {
                     // console.log("currentX: ", currentX, "currentZ: ", currentZ);    
                     // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
                     if(zBuffer[currentY][currentX] == null) {
@@ -123,11 +114,7 @@ export default class ZBufferGouraud extends ZBuffer{
                             
                             // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
                         }
-                        // let auxColorR = colorR * currentIlluminationR;
-                        // let auxColorG = colorG * currentIlluminationG;
-                        // let auxColorB = colorB * currentIlluminationB;
-                        // let colorRGB = `rgb(${auxColorR}, ${auxColorG}, ${auxColorB})`;
-                        // zBuffer[currentY][currentX] = {currentZ : currentZ, color: colorRGB};
+
                     } else {
                         if (currentZ < zBuffer[currentY][currentX].currentZ) {
                             let auxColorR = currentIlluminationR;
@@ -138,7 +125,7 @@ export default class ZBufferGouraud extends ZBuffer{
                             // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
                         }
                     }
-                    console.log("currentIlluminationR: ", currentIlluminationR, "currentIlluminationG: ", currentIlluminationG, "currentIlluminationB: ", currentIlluminationB);
+                    // console.log("currentIlluminationR: ", currentIlluminationR, "currentIlluminationG: ", currentIlluminationG, "currentIlluminationB: ", currentIlluminationB);
                    
                     currentZ += tZX;
                     currentIlluminationR += rateR;
@@ -149,7 +136,7 @@ export default class ZBufferGouraud extends ZBuffer{
             }
         }
 
-        console.log("zBuffer: ", zBuffer);
+        // console.log("zBuffer: ", zBuffer);
     }
     calcIlluminationRateRGB(edge) {
         let rateR = (edge.vertexEndIllumination[0] - edge.vertexInitIllumination[0])/(edge.vertexEnd.y-edge.vertexInit.y); // talvez mude a ordem dos Y, slide ta diferente

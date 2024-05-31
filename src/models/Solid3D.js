@@ -22,9 +22,9 @@ export default class Solid {
 
     material = {
         ka :  [0.97, 0.34, 0.6],
-        kd :  [0.4, 0.12, 0.7],
+        kd :  [0.7, 0.50, 0.7],
         ks :  [0.67, 0.3, 0.6],
-        n :   50,
+        n :   100,
     }
     constructor(id, list) {
 
@@ -64,66 +64,68 @@ export default class Solid {
             
         }
         console.log("testeWireframe: ", tempSliceList);
-        // for (let i = 0; i < fatias; i++) {
-        //     let index = i;
-        //     if(i == fatias-1) {
-        //         index = 0;
-        //     } 
-        //     for(let j = 0; j < tempSliceList[index].vertexList.length; j++){
-        //         const currentFaceEdges = [];
-        //         let edgeSlice1;
-        //         let edgeToSlice2;
-        //         let edgeSlice2;
-        //         let edgeToSlice1;
-        //         if(j == tempSliceList[index].vertexList.length - 1){
-        //             if(i == fatias-1) {
-        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
-        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[index].vertexList[0], 'edgeToSlice2 ' + i);
-        //                 edgeSlice2 = new Edge(tempSliceList[index].vertexList[0], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
-        //                 edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-        //             } else {
-        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
-        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[i+1].vertexList[0], 'edgeToSlice2 ' + i);
-        //                 edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[0], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
-        //                 edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-        //             }
+        for (let i = 0; i < fatias; i++) {
+            let index = i;
+            if(i == fatias-1) {
+                index = 0;
+            } 
+            for(let j = 0; j < tempSliceList[index].vertexList.length; j++){
+                const currentFaceEdges = [];
+                let edgeSlice1;
+                let edgeToSlice2;
+                let edgeSlice2;
+                let edgeToSlice1;
+                if(j == tempSliceList[index].vertexList.length - 1){
+                    if(i == fatias-1) {
+                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
+                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[index].vertexList[0], 'edgeToSlice2 ' + i);
+                        edgeSlice2 = new Edge(tempSliceList[index].vertexList[0], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+                        edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+                    } else {
+                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[0], "edgeSlice1 " + i);
+                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[0], tempSliceList[i+1].vertexList[0], 'edgeToSlice2 ' + i);
+                        edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[0], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
+                        edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+                    }
 
 
-        //         } else {  
+                } else {  
 
-        //             if(i == fatias-1) {
-        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
-        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
-        //                 edgeSlice2 = new Edge(tempSliceList[index].vertexList[j+1], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
-        //                 edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-        //             } else {
-        //                 edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
-        //                 edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[i+1].vertexList[j+1], 'edgeToSlice2 ' + i);
-        //                 edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[j+1], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
-        //                 edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-        //             }
+                    if(i == fatias-1) {
+                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
+                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
+                        edgeSlice2 = new Edge(tempSliceList[index].vertexList[j+1], tempSliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+                        edgeToSlice1 = new Edge(tempSliceList[index].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+                    } else {
+                        edgeSlice1 = new Edge(tempSliceList[i].vertexList[j], tempSliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
+                        edgeToSlice2 = new Edge(tempSliceList[i].vertexList[j+1], tempSliceList[i+1].vertexList[j+1], 'edgeToSlice2 ' + i);
+                        edgeSlice2 = new Edge(tempSliceList[i+1].vertexList[j+1], tempSliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
+                        edgeToSlice1 = new Edge(tempSliceList[i+1].vertexList[j], tempSliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+                    }
 
-        //         }
+                }
 
-        //         currentFaceEdges.push(edgeSlice1);
-        //         currentFaceEdges.push(edgeToSlice2);
-        //         currentFaceEdges.push(edgeSlice2);
-        //         currentFaceEdges.push(edgeToSlice1);
-        //         const face = new Face(currentFaceEdges);
-        //         if(face.isCounterClockwise()) {
-        //             console.log("faceTesteLogica Verdadeiro: ", face);
-        //             // this.facesList.push(face);
-        //             tempFacesList.push(face);
-        //         } else {
-        //             console.log("faceTesteLogica Falso: ", face);
-        //         // this.facesList.push(face);
+                currentFaceEdges.push(edgeSlice1);
+                currentFaceEdges.push(edgeToSlice2);
+                currentFaceEdges.push(edgeSlice2);
+                currentFaceEdges.push(edgeToSlice1);
+                const face = new Face(currentFaceEdges);
+                if(face.isCounterClockwise()) {
+                    console.log("faceTesteLogica Verdadeiro: ", face);
+                    // this.facesList.push(face);
+                    tempFacesList.push(face);
+                } else {
+                    console.log("faceTesteLogica Falso: ", face);
+                    tempFacesList.push(face);
+
+                // this.facesList.push(face);
                 
-        //         }
-        //     }
+                }
+            }
 
 
-        // }
-
+        }
+        
         let sruX = {
             min: -sruWidth,
             max: sruWidth
@@ -132,7 +134,7 @@ export default class Solid {
             min: -sruHeight,
             max: sruHeight
         }
-
+        
         let windowX = {
             min: 0,
             max: canvasWidth
@@ -143,14 +145,16 @@ export default class Solid {
         }
         console.log("TEMPPOLYLIST: ", tempSliceList);
         // let camera = new Camera([120, 120, 120], [1, 100, 5]);  // paralelo frontal
-        let camera = new Camera([0, 50, 50], [400, 0 , 0]);
+        // let camera = new Camera([0, 0, 0], [200, 0 , 0]); // rodar em X
+        let camera = new Camera([0, 0, 0], [300, 0 , 0]); // rodar em X
+        this.drawVisibleFaces(ctx, camera, tempFacesList);
         
         // let mjpMatrix = getMJP(sruX, sruY, windowX, windowY);
         let mjpMatrix = getInvertedMJP(sruX, sruY, windowX, windowY);
 
         console.log("mjpMatrix: ", mjpMatrix);
 
-        let projectionMatrix = getPerspectiveMatrix(camera, 80);
+        let projectionMatrix = getPerspectiveMatrix(camera);
         // let projectionMatrix = getParallelMatrix();
         console.log("projectionMatrix: ", projectionMatrix);
 
@@ -168,158 +172,249 @@ export default class Solid {
         // console.log("size templist: ", auxSliceList.length)
 
         // console.log("temp[4]: ", tempSliceList[4].vertexList)
+        let newTempFaceList = [];
+        let newEdgesList = [];
         
-        for(let i = 0; i < tempSliceList.length; i++){
-            for(let j = 0; j < tempSliceList[i].vertexList.length; j++){
-                tempSliceList[i].vertexList[j].x = tempSliceList[i].vertexList[j].x.toFixed(3);
-                tempSliceList[i].vertexList[j].y = tempSliceList[i].vertexList[j].y.toFixed(3);
-                tempSliceList[i].vertexList[j].z = tempSliceList[i].vertexList[j].z.toFixed(3);
-                let x = tempSliceList[i].vertexList[j].x;
-                let y = tempSliceList[i].vertexList[j].y;
-                let z = tempSliceList[i].vertexList[j].z;
-                console.log("teste do Z: ", z);
-                let auxPoints = [[x], 
-                                 [y], 
-                                 [z], 
-                                 [1]];
-                console.log("matrixSRU_SRT: ", matrixSRU_SRT);
-                // console.log("auxPoints: ", auxPoints);
-                
-                let resultMatrix = multiplyMatrices(matrixSRU_SRT, auxPoints);
-                // console.log("resultMatrix: ", resultMatrix);
+        for(let k = 0; k < tempFacesList.length; k++){
+            for(let s = 0; s< tempFacesList[k].listEdges.length; s++){
+                tempFacesList[k].listEdges[s].vertexInit.x = tempFacesList[k].listEdges[s].vertexInit.x;
+                tempFacesList[k].listEdges[s].vertexInit.y = tempFacesList[k].listEdges[s].vertexInit.y;
+                tempFacesList[k].listEdges[s].vertexInit.z = tempFacesList[k].listEdges[s].vertexInit.z;
 
-                auxSliceList[i].vertexList[j].x = resultMatrix[0]/resultMatrix[3];
-                auxSliceList[i].vertexList[j].y = resultMatrix[1]/resultMatrix[3];
-                auxSliceList[i].vertexList[j].z = resultMatrix[2][0];
-                console.log("aux teste do zaza :",  auxSliceList[i].vertexList[j].x,  auxSliceList[i].vertexList[j].y, auxSliceList[i].vertexList[j].z)
+                tempFacesList[k].listEdges[s].vertexEnd.x = tempFacesList[k].listEdges[s].vertexEnd.x;
+                tempFacesList[k].listEdges[s].vertexEnd.y = tempFacesList[k].listEdges[s].vertexEnd.y;
+                tempFacesList[k].listEdges[s].vertexEnd.z = tempFacesList[k].listEdges[s].vertexEnd.z;
+
+                let xInit = tempFacesList[k].listEdges[s].vertexInit.x;
+                let yInit = tempFacesList[k].listEdges[s].vertexInit.y;
+                let zInit = tempFacesList[k].listEdges[s].vertexInit.z;
+
+                let xEnd = tempFacesList[k].listEdges[s].vertexEnd.x;    
+                let yEnd = tempFacesList[k].listEdges[s].vertexEnd.y;
+                let zEnd = tempFacesList[k].listEdges[s].vertexEnd.z;
+                let auxInitPoints = [[xInit],
+                                 [yInit],
+                                 [zInit],
+                                 [1]];
+
+                let auxEndPoints = [[xEnd],
+                                 [yEnd],
+                                 [zEnd],
+                                 [1]];
+                let resultInitMatrix = multiplyMatrices(matrixSRU_SRT, auxInitPoints);
+                let resultEndMatrix = multiplyMatrices(matrixSRU_SRT, auxEndPoints);
+                console.log("result1: ", resultInitMatrix, "result2: ", resultEndMatrix);
+                let resultInit = new Vertex(resultInitMatrix[0]/resultInitMatrix[3], resultInitMatrix[1]/resultInitMatrix[3], resultInitMatrix[2][0]);
+                let resultEnd = new Vertex(resultEndMatrix[0]/resultEndMatrix[3], resultEndMatrix[1]/resultEndMatrix[3], resultEndMatrix[2][0]);
+                let newEdge = new Edge(resultInit, resultEnd, tempFacesList[k].listEdges[s].edgeID);
+                console.log("newEdge: ", newEdge);
+                newEdgesList.push(newEdge);
                 
             }
+            console.log("newEdgesList: ", newEdgesList);
+            let newVisibleFace = new Face(newEdgesList);
+            newTempFaceList[k] = newVisibleFace;
+            newEdgesList = [];
         }
-        this.sliceList = auxSliceList;
+
+        let newVisibleFaceList = [];
+        let edgesList = [];
+
+        console.log("this.visibleFaceList.length")
+        for(let k = 0; k < this.visibleFaceList.length; k++){
+            for(let s = 0; s< this.visibleFaceList[k].listEdges.length; s++){
+                this.visibleFaceList[k].listEdges[s].vertexInit.x = this.visibleFaceList[k].listEdges[s].vertexInit.x;
+                this.visibleFaceList[k].listEdges[s].vertexInit.y = this.visibleFaceList[k].listEdges[s].vertexInit.y;
+                this.visibleFaceList[k].listEdges[s].vertexInit.z = this.visibleFaceList[k].listEdges[s].vertexInit.z;
+
+                this.visibleFaceList[k].listEdges[s].vertexEnd.x = this.visibleFaceList[k].listEdges[s].vertexEnd.x;
+                this.visibleFaceList[k].listEdges[s].vertexEnd.y = this.visibleFaceList[k].listEdges[s].vertexEnd.y;
+                this.visibleFaceList[k].listEdges[s].vertexEnd.z = this.visibleFaceList[k].listEdges[s].vertexEnd.z;
+
+                let xInit = this.visibleFaceList[k].listEdges[s].vertexInit.x;
+                let yInit = this.visibleFaceList[k].listEdges[s].vertexInit.y;
+                let zInit = this.visibleFaceList[k].listEdges[s].vertexInit.z;
+
+                let xEnd = this.visibleFaceList[k].listEdges[s].vertexEnd.x;    
+                let yEnd = this.visibleFaceList[k].listEdges[s].vertexEnd.y;
+                let zEnd = this.visibleFaceList[k].listEdges[s].vertexEnd.z;
+                let auxInitPoints = [[xInit],
+                                 [yInit],
+                                 [zInit],
+                                 [1]];
+
+                let auxEndPoints = [[xEnd],
+                                 [yEnd],
+                                 [zEnd],
+                                 [1]];
+                let resultInitMatrix = multiplyMatrices(matrixSRU_SRT, auxInitPoints);
+                let resultEndMatrix = multiplyMatrices(matrixSRU_SRT, auxEndPoints);
+                console.log("result1: ", resultInitMatrix, "result2: ", resultEndMatrix);
+                let resultInit = new Vertex(resultInitMatrix[0]/resultInitMatrix[3], resultInitMatrix[1]/resultInitMatrix[3], resultInitMatrix[2][0]);
+                let resultEnd = new Vertex(resultEndMatrix[0]/resultEndMatrix[3], resultEndMatrix[1]/resultEndMatrix[3], resultEndMatrix[2][0]);
+                let newEdge = new Edge(resultInit, resultEnd, this.visibleFaceList[k].listEdges[s].edgeID);
+                console.log("newEdge: ", newEdge);
+                edgesList.push(newEdge);
+                
+            }
+            console.log("EdgesList: ", edgesList);
+            let newVisibleFace = new Face(edgesList);
+            newVisibleFaceList[k] = newVisibleFace;
+            edgesList = [];
+        }
+
+        // for(let i = 0; i < tempSliceList.length; i++){
+        //     for(let j = 0; j < tempSliceList[i].vertexList.length; j++){
+        //         tempSliceList[i].vertexList[j].x = tempSliceList[i].vertexList[j].x.toFixed(3);
+        //         tempSliceList[i].vertexList[j].y = tempSliceList[i].vertexList[j].y.toFixed(3);
+        //         tempSliceList[i].vertexList[j].z = tempSliceList[i].vertexList[j].z.toFixed(3);
+        //         let x = tempSliceList[i].vertexList[j].x;
+        //         let y = tempSliceList[i].vertexList[j].y;
+        //         let z = tempSliceList[i].vertexList[j].z;
+        //         console.log("teste do Z: ", z);
+        //         let auxPoints = [[x], 
+        //                          [y], 
+        //                          [z], 
+        //                          [1]];
+        //         console.log("matrixSRU_SRT: ", matrixSRU_SRT);
+        //         // console.log("auxPoints: ", auxPoints);
+                
+        //         let resultMatrix = multiplyMatrices(matrixSRU_SRT, auxPoints);
+        //         // console.log("resultMatrix: ", resultMatrix);
+
+        //         auxSliceList[i].vertexList[j].x = resultMatrix[0]/resultMatrix[3];
+        //         auxSliceList[i].vertexList[j].y = resultMatrix[1]/resultMatrix[3];
+        //         auxSliceList[i].vertexList[j].z = resultMatrix[2][0];
+        //         console.log("aux teste do zaza :",  auxSliceList[i].vertexList[j].x,  auxSliceList[i].vertexList[j].y, auxSliceList[i].vertexList[j].z)
+                
+        //     }
+        // }
+        // this.sliceList = auxSliceList;
         // for(let i = 0; i < this.sliceList.length; i++){
         //     this.sliceList[i].drawPolygon(ctx);
         // }
-        console.log("sliceList: ", this.sliceList);
 
-        let teste1 = this.sliceList[0].vertexList[0+1];
-        console.log("teste1: ", teste1);
-        for (let i = 0; i < fatias; i++) {
-            let index = i;
-            // this.sliceList[index].drawPolygon(ctx);
-            if(i == fatias-1) {
-                index = 0;
-            } 
-            for(let j = 0; j < this.sliceList[index].vertexList.length; j++){
-                const currentFaceEdges = [];
-                let edgeSlice1;
-                let edgeToSlice2;
-                let edgeSlice2;
-                let edgeToSlice1;
-                if(j == this.sliceList[index].vertexList.length - 1){
-                    if(i == fatias-1) {
-                        edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[0], "edgeSlice1 " + i);
-                        edgeToSlice2 = new Edge(this.sliceList[i].vertexList[0], this.sliceList[index].vertexList[0], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(this.sliceList[index].vertexList[0], this.sliceList[index].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    } else {
-                        edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[0], "edgeSlice1 " + i);
-                        edgeToSlice2 = new Edge(this.sliceList[i].vertexList[0], this.sliceList[i+1].vertexList[0], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(this.sliceList[i+1].vertexList[0], this.sliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(this.sliceList[i+1].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    }
+        // console.log("sliceList: ", this.sliceList);
+
+        // let teste1 = this.sliceList[0].vertexList[0+1];
+
+        // for (let i = 0; i < fatias; i++) {
+        //     let index = i;
+        //     // this.sliceList[index].drawPolygon(ctx);
+        //     if(i == fatias-1) {
+        //         index = 0;
+        //     } 
+        //     for(let j = 0; j < this.sliceList[index].vertexList.length; j++){
+        //         const currentFaceEdges = [];
+        //         let edgeSlice1;
+        //         let edgeToSlice2;
+        //         let edgeSlice2;
+        //         let edgeToSlice1;
+        //         if(j == this.sliceList[index].vertexList.length - 1){
+        //             if(i == fatias-1) {
+        //                 edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[0], "edgeSlice1 " + i);
+        //                 edgeToSlice2 = new Edge(this.sliceList[i].vertexList[0], this.sliceList[index].vertexList[0], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(this.sliceList[index].vertexList[0], this.sliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             } else {
+        //                 edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[0], "edgeSlice1 " + i);
+        //                 edgeToSlice2 = new Edge(this.sliceList[i].vertexList[0], this.sliceList[i+1].vertexList[0], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(this.sliceList[i+1].vertexList[0], this.sliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(this.sliceList[i+1].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             }
 
 
-                } else {  
+        //         } else {  
 
-                    if(i == fatias-1) {
-                        edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
-                        edgeToSlice2 = new Edge(this.sliceList[i].vertexList[j+1], this.sliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(this.sliceList[index].vertexList[j+1], this.sliceList[index].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    } else {
-                        edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
-                        edgeToSlice2 = new Edge(this.sliceList[i].vertexList[j+1], this.sliceList[i+1].vertexList[j+1], 'edgeToSlice2 ' + i);
-                        edgeSlice2 = new Edge(this.sliceList[i+1].vertexList[j+1], this.sliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
-                        edgeToSlice1 = new Edge(this.sliceList[i+1].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
-                    }
+        //             if(i == fatias-1) {
+        //                 edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
+        //                 edgeToSlice2 = new Edge(this.sliceList[i].vertexList[j+1], this.sliceList[index].vertexList[j+1], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(this.sliceList[index].vertexList[j+1], this.sliceList[index].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(this.sliceList[index].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             } else {
+        //                 edgeSlice1 = new Edge(this.sliceList[i].vertexList[j], this.sliceList[i].vertexList[j+1], 'edgeSlice1 ' + i);
+        //                 edgeToSlice2 = new Edge(this.sliceList[i].vertexList[j+1], this.sliceList[i+1].vertexList[j+1], 'edgeToSlice2 ' + i);
+        //                 edgeSlice2 = new Edge(this.sliceList[i+1].vertexList[j+1], this.sliceList[i+1].vertexList[j], 'edgeSlice2 ' + i);
+        //                 edgeToSlice1 = new Edge(this.sliceList[i+1].vertexList[j], this.sliceList[i].vertexList[j], 'edgeToSlice1 ' + i);
+        //             }
 
-                }
+        //         }
 
-                currentFaceEdges.push(edgeSlice1);
-                currentFaceEdges.push(edgeToSlice2);
-                currentFaceEdges.push(edgeSlice2);
-                currentFaceEdges.push(edgeToSlice1);
-                const face = new Face(currentFaceEdges);
+        //         currentFaceEdges.push(edgeSlice1);
+        //         currentFaceEdges.push(edgeToSlice2);
+        //         currentFaceEdges.push(edgeSlice2);
+        //         currentFaceEdges.push(edgeToSlice1);
+        //         const face = new Face(currentFaceEdges);
 
-                if(face.isCounterClockwise()) {
-                    console.log("faceTesteLogica Verdadeiro: ", face);
-                    this.facesList.push(face);
-                    // tempFacesList.push(face);
-                } else {
-                    console.log("faceTesteLogica Falso: ", face);
-                    let newFace = this.reverseFace(face);
+        //         if(face.isCounterClockwise()) {
+        //             console.log("faceTesteLogica Verdadeiro: ", face);
+        //             this.facesList.push(face);
+        //             // tempFacesList.push(face);
+        //         } else {
+        //             console.log("faceTesteLogica Falso: ", face);
+        //             let newFace = this.reverseFace(face);
 
-                    // inverter aqui
-                    this.facesList.push(newFace);
+        //             // inverter aqui
+        //             this.facesList.push(newFace);
                 
-                }
-                // this.facesList.push(face);
+        //         }
+        //         // this.facesList.push(face);
                 
-            }
-            console.log("SliceList: ", this.sliceList);
-            console.log("drawWireframe: ", this.sliceList[0].vertexList[1].x, this.sliceList[0].vertexList[1].y, this.sliceList[1].vertexList[1].x, this.sliceList[1].vertexList[1].y);
-            // this.drawFaceOK(ctx, this.facesList[i]);
-            // if(this.testeVisibilidade(tempFacesList[i], camera.getVRP()) > 0){
+        //     }
+        //     console.log("SliceList: ", this.sliceList);
+        //     console.log("drawWireframe: ", this.sliceList[0].vertexList[1].x, this.sliceList[0].vertexList[1].y, this.sliceList[1].vertexList[1].x, this.sliceList[1].vertexList[1].y);
+        //     // this.drawFaceOK(ctx, this.facesList[i]);
+        //     // if(this.testeVisibilidade(tempFacesList[i], camera.getVRP()) > 0){
                 
-            //     if (i < fatias - 1) {
-            //         this.drawFaceOK(ctx, tempFacesList[i]); 
-            //     }
-            //      else {
-            //         this.drawFace(ctx, this.sliceList[i]); // Fecha o polígono
-            //     }
-            // }
+        //     //     if (i < fatias - 1) {
+        //     //         this.drawFaceOK(ctx, tempFacesList[i]); 
+        //     //     }
+        //     //      else {
+        //     //         this.drawFace(ctx, this.sliceList[i]); // Fecha o polígono
+        //     //     }
+        //     // }
                         
-        }
+        // }
         // console.log("facesList: ", tempFacesList);
         let count = 0;
 
             // let result = this.testeVisibilidade(tempFacesList[i], camera.getVRP(), ctx, i);
-        for(let i = 0; i < this.facesList.length; i++){
-            ctx.beginPath();
-                ctx.strokeStyle = "Black";
+        // for(let i = 0; i < newVisibleFaceList.length; i++){
+        //     ctx.beginPath();
+        //         ctx.strokeStyle = "Black";
 
-                ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
-                this.facesList[i].listEdges.forEach(edge => {
-                    console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
-                    ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
-                });
-                ctx.closePath();
-                ctx.stroke();
-        }
-        this.drawVisibleFaces(ctx, camera, count);
+        //         ctx.moveTo(newVisibleFaceList[i].listEdges[0].vertexInit.x, newVisibleFaceList[i].listEdges[0].vertexInit.y);
+        //         newVisibleFaceList[i].listEdges.forEach(edge => {
+        //             console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
+        //             ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+        //         });
+        //         ctx.closePath();
+        //         ctx.stroke();
+        // }
+
         // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	
-        // let L = {vector : [-250, 500, -500], Il : [233, 200, 99]};	//gouroud
-        let L = {vector : [-1100, 500, 300], Il : [233, 200, 99]};	
+        let L = {vector : [1050, -500, -900], Il : [170, 140, 120]};	//gouroud
+        // let L = {vector : [-10000, 300, 500], Il : [233, 100, 200]};	
 
-        
+        console.log("newTempFaceList: ", newTempFaceList);
 
         let zBufferFrame = Array.from({ length: windowY.max }, () => Array.from({ length: windowX.max }, () => null));
 
-        for(let i = 0; i < this.visibleFaceList.length; i++){
-            // let material = this.getMaterial();
-            // let constantShade = new ConstantShade([120, 160, 200], L, this.visibleFaceList[i], camera, material);
+        for(let i = 0; i < newVisibleFaceList.length; i++){
+            let material = this.getMaterial();
+            // let constantShade = new ConstantShade([120, 160, 200], L, newVisibleFaceList[i], camera, material);
             // constantShade.constantRun();
-            // let zBuffer = new ZBuffer(windowX, windowY, this.visibleFaceList[i]);
+            // let zBuffer = new ZBuffer(windowX, windowY, newVisibleFaceList[i]);
             // zBuffer.render(ctx, zBufferFrame, this.color);
-            // let gouroudShade = new GouroudShade([120, 160, 200], L, this.visibleFaceList[i], camera, material, this.facesList);
+            // let gouroudShade = new GouroudShade([120, 160, 200], L, newVisibleFaceList[i], camera, material, newTempFaceList);
             // gouroudShade.gouroudRun();
-            // let zBufferGouraud = new ZBufferGouraud(windowX, windowY, this.visibleFaceList[i]);
+            // let zBufferGouraud = new ZBufferGouraud(windowX, windowY, newVisibleFaceList[i]);
             // zBufferGouraud.render(ctx, zBufferFrame, this.color);
 
-            // let phongShade = new PhongShade([120, 160, 200], L, this.visibleFaceList[i], camera, material, this.facesList);
+            let phongShade = new PhongShade([120, 160, 200], L, newVisibleFaceList[i], camera, material, newTempFaceList);
 
-            // let zBufferPhong = new ZBufferPhong(windowX, windowY, this.visibleFaceList[i]);
-            // zBufferPhong.render(ctx, zBufferFrame, phongShade, this.facesList, L, camera);
+            let zBufferPhong = new ZBufferPhong(windowX, windowY, newVisibleFaceList[i]);
+            zBufferPhong.render(ctx, zBufferFrame, phongShade, newTempFaceList, L, camera);
 
             // console.log("zbuffer " + i + ": ", zBuffer.getFace());
         }
@@ -427,72 +522,118 @@ export default class Solid {
         return result;
     }
         
-    drawFaces(ctx) {
+    // drawFaces(ctx) {
+    //     if (!ctx) {
+    //         console.error("Canvas context (ctx) is undefined");
+    //         return;
+    //     }
+    
+    //     if (this.facesList.length === 0) {
+    //         console.warn("No faces to draw");
+    //         return;
+    //     }
+    
+    //     this.facesList.forEach(face => {
+    //         if (face.listEdges.length < 3) {
+    //             console.warn("Face has less than 3 edges");
+    //             return;
+    //         }
+    
+    //         ctx.beginPath();
+    //         ctx.strokeStyle = this.getRandomColor();
+    //         ctx.moveTo(face.listEdges[0].vertexInit.x, face.listEdges[0].vertexInit.y);
+    //         face.listEdges.forEach(edge => {
+    //             ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+    //         });
+    //         ctx.closePath();
+    //         ctx.stroke();
+    //     });
+    // }
+
+
+
+    // drawVisibleFaces(ctx, camera, count) {
+    //     if (!ctx) {
+    //         console.error("Canvas context (ctx) is undefined");
+    //         return;
+    //     }
+    
+    //     if (this.facesList.length === 0) {
+    //         console.warn("No faces to draw");
+    //         return;
+    //     }
+        
+    //     for(let i = 0; i < this.facesList.length; i++){
+    //         const visibility = this.testeVisibilidade(this.facesList[i], camera.getVRP());
+    //         if (visibility > 0) {
+    //             this.visibleFaceList.push(this.facesList[i]);
+    //             // count++;
+    //             // console.log("count: ", count, "face: ", this.facesList[i].centroide);
+    //             // // Desenha a face apenas se for visível
+    //             // ctx.beginPath();
+    //             // ctx.strokeStyle = "Black";
+
+    //             // ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
+    //             // this.facesList[i].listEdges.forEach(edge => {
+    //             //     console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
+    //             //     ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+    //             // });
+    //             // ctx.closePath();
+    //             ctx.stroke();
+    //         }
+    //         else {
+    //             this.notVisibleFaceList.push(this.facesList[i]);
+    //             // ctx.beginPath();
+    //             // ctx.strokeStyle = "red";
+
+    //             // ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
+    //             // this.facesList[i].listEdges.forEach(edge => {
+    //             //     console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
+    //             //     ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
+    //             // });
+    //             // ctx.closePath();
+    //             // ctx.stroke();
+    //         }
+    //     }
+    // }
+
+    drawVisibleFaces(ctx, camera, list) {
+        console.log("LISTA: ", list);
         if (!ctx) {
             console.error("Canvas context (ctx) is undefined");
             return;
         }
     
-        if (this.facesList.length === 0) {
-            console.warn("No faces to draw");
-            return;
-        }
-    
-        this.facesList.forEach(face => {
-            if (face.listEdges.length < 3) {
-                console.warn("Face has less than 3 edges");
-                return;
-            }
-    
-            ctx.beginPath();
-            ctx.strokeStyle = this.getRandomColor();
-            ctx.moveTo(face.listEdges[0].vertexInit.x, face.listEdges[0].vertexInit.y);
-            face.listEdges.forEach(edge => {
-                ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
-            });
-            ctx.closePath();
-            ctx.stroke();
-        });
-    }
-
-
-
-    drawVisibleFaces(ctx, camera, count) {
-        if (!ctx) {
-            console.error("Canvas context (ctx) is undefined");
-            return;
-        }
-    
-        if (this.facesList.length === 0) {
+        if (list.length === 0) {
             console.warn("No faces to draw");
             return;
         }
         
-        for(let i = 0; i < this.facesList.length; i++){
-            const visibility = this.testeVisibilidade(this.facesList[i], camera.getVRP());
+        for(let i = 0; i < list.length; i++){
+            const visibility = this.testeVisibilidade(list[i], camera.getVRP());
             if (visibility > 0) {
-                this.visibleFaceList.push(this.facesList[i]);
+                this.visibleFaceList.push(list[i]);
                 // count++;
-                // console.log("count: ", count, "face: ", this.facesList[i].centroide);
-                // // Desenha a face apenas se for visível
+                // console.log("count: ", count, "face: ", list[i].centroide);
+                // Desenha a face apenas se for visível
                 // ctx.beginPath();
                 // ctx.strokeStyle = "Black";
 
-                // ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
-                // this.facesList[i].listEdges.forEach(edge => {
+                // ctx.moveTo(list[i].listEdges[0].vertexInit.x, list[i].listEdges[0].vertexInit.y);
+                // list[i].listEdges.forEach(edge => {
                 //     console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
                 //     ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
                 // });
                 // ctx.closePath();
-                ctx.stroke();
+                // ctx.stroke();
             }
             else {
-                this.notVisibleFaceList.push(this.facesList[i]);
+                this.notVisibleFaceList.push(list[i]);
                 // ctx.beginPath();
                 // ctx.strokeStyle = "red";
 
-                // ctx.moveTo(this.facesList[i].listEdges[0].vertexInit.x, this.facesList[i].listEdges[0].vertexInit.y);
-                // this.facesList[i].listEdges.forEach(edge => {
+                // ctx.moveTo(list[i].listEdges[0].vertexInit.x, list[i].listEdges[0].vertexInit.y);
+                // list[i].listEdges.forEach(edge => {
                 //     console.log("testeDoWireframe: ", edge, "X DIFF: ", edge.vertexEnd.x - edge.vertexInit.x, " Y Diff ", edge.vertexEnd.y - edge.vertexInit.y);
                 //     ctx.lineTo(edge.vertexEnd.x, edge.vertexEnd.y);
                 // });

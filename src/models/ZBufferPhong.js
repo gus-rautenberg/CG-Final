@@ -18,11 +18,13 @@ export default class ZBufferPhong extends ZBuffer{
         let vertexCNormalizedMedia = this.getVertexNormalizedMedia(facesC);
         let vertexDNormalizedMedia = this.getVertexNormalizedMedia(facesD);
         let vertexNormalized = [vertexANormalizedMedia, vertexBNormalizedMedia, vertexCNormalizedMedia, vertexDNormalizedMedia];	
-        console.log("AQUI: L.vector: ", L.vector, " face.centroide: ", this.face.centroide);
+        // console.log("TestePhongVertices da Face: ", verticesFromFace);
+        // console.log("TestePhongvertexNormalized: ", vertexNormalized);
+        // console.log("AQUI: L.vector: ", L.vector, " face.centroide: ", this.face.centroide);
         let Lnormal = this.subtractVectors(L.vector, this.face.centroide);
-        console.log("Lnormal TP TO AQI: ", Lnormal);
+        // console.log("Lnormal TP TO AQI: ", Lnormal);
         Lnormal = this.normalizarVetor(Lnormal);
-        console.log("Lnormal Normalizado: ", Lnormal);
+        // console.log("Lnormal Normalizado: ", Lnormal);
         
         let s = this.subtractVectors(camera.getVRP(),  this.face.centroide);
         
@@ -35,132 +37,113 @@ export default class ZBufferPhong extends ZBuffer{
         // let colorRGB = `rgb(${colorR}, ${colorG}, ${colorB})`;
         
         let intersections = new Map();
-        console.log("face: ", this.face);
-        console.log("viewPort: ", this.viewPortY.min, this.viewPortY.max);
+        // console.log("face: ", this.face);
+        // console.log("viewPort: ", this.viewPortY.min, this.viewPortY.max);
         
         for (let y = this.viewPortY.min; y < this.viewPortY.max; y++) {
             intersections.set(y, []);
         }
         
         this.face.listEdges.forEach(edge => {
-            console.log("edge: ", edge);
-            let [dX, dZ] = this.calcDAndT(edge);
+            // console.log("edge: ", edge);
             let [yMinEdge, yMaxEdge, xMinEdge, xMaxEdge] = this.findEdgeMinMax(edge);
 
-            // let x = edge.vertexInit.x;
-            // let z = edge.vertexInit.z;
-            let currentIlluminationR, currentIlluminationG, currentIlluminationB;
-            let lastIlluminationR, lastIlluminationG, lastIlluminationB;
+
             let initialY, endY, currentX, currentR, currentG, currentB, currentZ;
             let currentI, currentJ, currentK;
 
-            console.log("RGB", edge.vertexInitIllumination[0], edge.vertexInitIllumination[1], edge.vertexInitIllumination[2]);
+            // console.log("RGB", edge.vertexInitIllumination[0], edge.vertexInitIllumination[1], edge.vertexInitIllumination[2]);
             if (edge.vertexInit.y < edge.vertexEnd.y) { //talvez mudar para <
                 initialY = Math.ceil(edge.vertexInit.y);
                 endY = Math.floor(edge.vertexEnd.y);
                 currentX = edge.vertexInit.x;
                 currentZ = edge.vertexInit.z;
-                // currentIlluminationR = edge.vertexInitIllumination[0];
-                // currentIlluminationG = edge.vertexInitIllumination[1];
-                // currentIlluminationB = edge.vertexInitIllumination[2];
-                // lastIlluminationR = edge.vertexEndIllumination[0];
-                // lastIlluminationG = edge.vertexEndIllumination[1];
-                // lastIlluminationB = edge.vertexEndIllumination[2];
+
                 let edgeInitNormalizedVector, edgeEndNormalizedVector;
                 for(let i = 0; i < 4; i++){
-                    if(edge.vertexInit == verticesFromFace[i]){
+                    // console.log("TestePhong ", " verticesFromFace[i]: ", verticesFromFace[i] , "vertexInit: ", edge.vertexInit);
+                    if(this.vertexEqual(edge.vertexInit, verticesFromFace[i])){
                         edgeInitNormalizedVector = vertexNormalized[i];
                     }
-                    if(edge.vertexEnd == verticesFromFace[i]){
+                    // console.log("TestePhong", "  verticesFromFace[i]: ", verticesFromFace[i] , "vertexEnd: ", edge.vertexEnd);
+
+                    if(this.vertexEqual(edge.vertexEnd, verticesFromFace[i])){
                         edgeEndNormalizedVector = vertexNormalized[i];
                     }
                 }
+                // console.log("TestePhong edgeInitNormalizedVectorTeste: ", edgeInitNormalizedVector, "edgeEndNormalizedVector: ", edgeEndNormalizedVector);
+
                 edge.setNormalizedVertexVector(edgeInitNormalizedVector, edgeEndNormalizedVector);
-
-
 
             } else {
                 initialY = Math.ceil(edge.vertexEnd.y);
                 endY = Math.floor(edge.vertexInit.y);
                 currentX = edge.vertexEnd.x;
                 currentZ = edge.vertexEnd.z;
-                // currentIlluminationR = edge.vertexEndIllumination[0];
-                // currentIlluminationG = edge.vertexEndIllumination[1];
-                // currentIlluminationB = edge.vertexEndIllumination[2];
-                // lastIlluminationR = edge.vertexInitIllumination[0];
-                // lastIlluminationG = edge.vertexInitIllumination[1];
-                // lastIlluminationB = edge.vertexInitIllumination[2];
+
                 let edgeInitNormalizedVector, edgeEndNormalizedVector;
                 for(let i = 0; i < 4; i++){
-                    if(edge.vertexInit == verticesFromFace[i]){
+                    // console.log("TestePhong -Y ", "verticesFromFace[i]: ", verticesFromFace[i] , "vertexInit: ", edge.vertexInit);
+
+                    if(this.vertexEqual(edge.vertexInit, verticesFromFace[i])){
                         edgeInitNormalizedVector = vertexNormalized[i];
+                        // console.log("TestePhong achou: ", edgeInitNormalizedVector);
                     }
-                    if(edge.vertexEnd == verticesFromFace[i]){
+                    // console.log("TestePhong -Y", "verticesFromFace[i]: ", verticesFromFace[i] , "vertexEnd: ", edge.vertexEnd);
+
+                    if(this.vertexEqual(edge.vertexEnd, verticesFromFace[i])){
                         edgeEndNormalizedVector = vertexNormalized[i];
                     }
                 }
+                // console.log("TestePhong -Y edgeInitNormalizedVectorTeste: ", edgeInitNormalizedVector, "edgeEndNormalizedVector: ", edgeEndNormalizedVector);
                 edge.setNormalizedVertexVector(edgeEndNormalizedVector, edgeInitNormalizedVector);
             }
+            
+            let [dX, dZ] = this.calcDAndT(edge);
             // let [rateR, rateG, rateB] = this.calcIlluminationRateRGB(edge);
             let [rateI, rateJ, rateK] = this.calcNRate(edge);
             currentI = edge.edgeInitNormalizedVector[0];
             currentJ = edge.edgeInitNormalizedVector[1];
             currentK = edge.edgeInitNormalizedVector[2];
-            console.log("initialY: ", initialY, "endY: ", endY);
+            // console.log("initialY: ", initialY, "endY: ", endY);
             for (let y = initialY; y <= endY; y++) {
                 // console.log("y: ", y);
                 // intersections.get(y).push({ x: currentX, z: currentZ, rateIlluminationR: currentIlluminationR, rateIlluminationG: currentIlluminationG, rateIlluminationB: currentIlluminationB, rateI: currentI, rateJ: currentJ, rateK: currentK });
+                if(intersections.get(y) == undefined) {
+                    intersections.set(y, []);
+                }
                 intersections.get(y).push({ x: currentX, z: currentZ, rateI: currentI, rateJ: currentJ, rateK: currentK });
 
-                // console.log("x: ", currentX, "z: ", currentZ);
-                // console.log("intersections.get", intersections.get(y));
                 currentX += dX;
                 currentZ += dZ;
-                // currentIlluminationR += rateR;
-                // currentIlluminationG += rateG;
-                // currentIlluminationB += rateB;
+
                 currentI += rateI;
                 currentJ += rateJ;
                 currentK += rateK;
             }
-            console.log("intersections(162): ", intersections.get(162));
+            // console.log("intersections(162): ", intersections.get(162));
             
         
         });
 
-        console.log("intersectionsAntes: ", intersections);
+        // console.log("intersectionsAntes: ", intersections);
         intersections.forEach((sortX) => {
             const sortedX = sortX.slice().sort((a, b) => a.x - b.x);
             sortX.splice(0, sortX.length, ...sortedX);
         });
 
-        console.log("intersectionsTUDO: ", intersections);
-
-
-        // let zBuffer;
-        // for(let y = Math.ceil(this.viewPortY.min); y < Math.floor(this.viewPortY.max); y++) {
-        //     for(let currentX = Math.ceil(this.viewPortY.min); currentX < Math.floor(this.viewPortY.max); currentX++) {
-        //         zBuffer[y][currentX] = null;
-        //     }
-        // }
-        // let zBuffer = Array.from({ length: this.viewPortY.max }, () => Array.from({ length: this.viewPortX.max }, () => null));
-
-        // console.log("zBuffer: ", zBuffer);
-
+        // console.log("intersectionsTUDO: ", intersections);
 
         for (let currentY = this.viewPortY.min; currentY < this.viewPortY.max; currentY++) {
             let edge = intersections.get(currentY);
             // console.log("edge: ", edge, "currentY: ", currentY);
-            for (let i = 0; i < edge.length; i+=2) {
+            for (let i = 0; i < edge.length-1; i+=2) {
                 let initialX = Math.ceil(edge[i].x);
                 let endX = Math.floor(edge[i + 1].x);
+
                 let currentZ = edge[i].z;
                 let tZX = (edge[i + 1].z - edge[i].z) / (edge[i + 1].x - edge[i].x);
-                // console.log("currentIllumination: ", edge[i].rateIlluminationR, edge[i].rateIlluminationG, edge[i].rateIlluminationB);
-                // let currentIlluminationR = edge[i].rateIlluminationR;
-                // let currentIlluminationG = edge[i].rateIlluminationG;
-                // let currentIlluminationB = edge[i].rateIlluminationB;
-                console.log("EdgeTeste", edge[i])
+
                 let currentI = edge[i].rateI;
                 let currentJ = edge[i].rateJ;
                 let currentK = edge[i].rateK;
@@ -169,12 +152,8 @@ export default class ZBufferPhong extends ZBuffer{
                 let rateJX = (edge[i+1].rateJ - edge[i].rateJ) / (edge[i + 1].x - edge[i].x);
                 let rateKX = (edge[i+1].rateK - edge[i].rateK) / (edge[i + 1].x - edge[i].x);
 
-                // let rateR = (edge[i + 1].rateIlluminationR - edge[i].rateIlluminationR) / (edge[i + 1].x - edge[i].x);
-                // let rateG = (edge[i + 1].rateIlluminationG - edge[i].rateIlluminationG) / (edge[i + 1].x - edge[i].x);
-                // let rateB = (edge[i + 1].rateIlluminationB - edge[i].rateIlluminationB) / (edge[i + 1].x - edge[i].x);
-
-                console.log("currentZ: ", currentZ);
-                for (let currentX = initialX; currentX < endX; currentX++) {
+                // console.log("currentZ: ", currentZ);
+                for (let currentX = initialX; currentX <= endX; currentX++) {
                     // console.log("currentX: ", currentX, "currentZ: ", currentZ);    
                     // console.log("zBuffer[currentY][currentX]: ", zBuffer[currentY][currentX]);
                     if(zBuffer[currentY][currentX] == null) {
@@ -226,16 +205,17 @@ export default class ZBufferPhong extends ZBuffer{
             }
         }
 
-        console.log("zBuffer: ", zBuffer);
+        // console.log("zBuffer: ", zBuffer);
     }
 
     getH(v1, v2) {
         let h = [];
         h = this.sumVectors(v1, v2);
-        let x = h[0]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
-        let y = h[1]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
-        let z = h[2]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
-        h = [x, y, z];
+        // let x = h[0]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
+        // let y = h[1]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
+        // let z = h[2]/Math.sqrt(Math.pow(h[0],2) + Math.pow(h[1],2) + Math.pow(h[2],2));
+        h = this.normalizarVetor(h)
+        // h = [x, y, z];
 
         return h;
     }
@@ -260,13 +240,13 @@ export default class ZBufferPhong extends ZBuffer{
     
     getVertexNormalizedMedia(faces = []) {
         let normalizedSum = [0, 0, 0];
-        console.log("facesAQUI1: ", faces);
+        // console.log("facesAQUI1: ", faces);
         faces.forEach(face => {
-            console.log("face.getNormal()AQUYU: ", face.getNormal());
+            // console.log("face.getNormal()AQUYU: ", face.getNormal());
             normalizedSum = this.sumVectors(normalizedSum, face.getNormal());
         });
         normalizedSum = this.normalizarVetor(normalizedSum);
-        console.log("normalizedSum: ", normalizedSum);
+        // console.log("normalizedSum: ", normalizedSum);
         return normalizedSum;
     }
 
@@ -305,18 +285,15 @@ export default class ZBufferPhong extends ZBuffer{
     }
 
     calcNRate(edge){
-        console.log("CalcNRate: ", edge);
-        console.log("CalcNRate: ", edge.edgeInitNormalizedVector);
+
         let rateI =  (edge.edgeEndNormalizedVector[0]-edge.edgeInitNormalizedVector[0])/(edge.vertexEnd.y-edge.vertexInit.y); 
-        console.log("CalcNRate Diff1: ", (edge.edgeEndNormalizedVector[0]-edge.edgeInitNormalizedVector[0]), "EdgeDiff: ", (edge.vertexEnd.y-edge.vertexInit.y));   
         let rateJ =  (edge.edgeEndNormalizedVector[1]-edge.edgeInitNormalizedVector[1])/(edge.vertexEnd.y-edge.vertexInit.y);
         let rateK =  (edge.edgeEndNormalizedVector[2]-edge.edgeInitNormalizedVector[2])/(edge.vertexEnd.y-edge.vertexInit.y);
-        console.log("CalcNRate: ", rateI, rateJ, rateK);
         return [rateI, rateJ, rateK];
     }
 
     subtractVectors(vertexA, vertexB) {
-        console.log("subtractVectors: ", vertexA, vertexB);
+        // console.log("subtractVectors: ", vertexA, vertexB);
         const x = vertexA[2] - vertexB[0];
         const y = vertexA[1] - vertexB[1];
         const z = vertexA[2] - vertexB[2];
@@ -332,10 +309,10 @@ export default class ZBufferPhong extends ZBuffer{
 
     checkVertexInSolidFaces(vertex, allFacesWithVertex = []) {
         this.faceList.forEach(face => {
-            console.log("VertexAQUI: ", vertex);
-            console.log("checkVertexAQUI: ", face.checkVertex(vertex));
+            // console.log("VertexAQUI: ", vertex);
+            // console.log("checkVertexAQUI: ", face.checkVertex(vertex));
             if (face.checkVertex(vertex)) {
-                console.log("faceAQUI: ", face);
+                // console.log("faceAQUI: ", face);
                 allFacesWithVertex.push(face);
             }
         });

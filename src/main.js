@@ -83,14 +83,14 @@ function wireframeTeste(poly){
     let solid3D = new Solid(polyListTeste[0].id, polyListTeste);
     let sruWidth = canva2D.width;
     let sruHeight = canva2D.height;
-    canva2D.width = 1200; //320 600
-    canva2D.height = 800; //240 600 
+    canva2D.width = 1400; //320 600
+    canva2D.height = 900; //240 600 
     canvasContext2D.translate(0, canva2D.height);
     canvasContext2D.scale(1, -1);
     let canvasWidth = canva2D.width;
     let canvasHeight = canva2D.height;
     // canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);
-    solid3D.calcWireframe(4, 'x', canvasContext2D, sruWidth, sruHeight, canvasWidth, canvasHeight);
+    solid3D.calcWireframe(36, 'x', canvasContext2D, sruWidth, sruHeight, canvasWidth, canvasHeight);
     // solid3D.identifyFaces();
 
     // console.log("canvWidth: ", canva2D.width, "canvHeight: ", canva2D.height);

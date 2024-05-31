@@ -9,7 +9,7 @@ export function getParallelMatrix() {
 
 }
 
-export function getPerspectiveMatrix(camera, zprpT)
+export function getPerspectiveMatrix(camera)
 {
     let matrix = [[]];
 
@@ -22,8 +22,8 @@ export function getPerspectiveMatrix(camera, zprpT)
     let zvp = distanceBetweenVectors( camera.getVRP(), camera.getFocalPoint());
     let nNormalized = camera.getNNormalized();
     let dp_distance = vrp[2]-zvp;
+    // let dp_distance = 100;
     console.log("DISTANCIOA: ", dp_distance);
-    // let dp_distance = 40;
     
     let xvpSRU = vrp[0] + (dp_distance * -nNormalized[0]);
     let yvpSRU = vrp[1] + (dp_distance * -nNormalized[1]);

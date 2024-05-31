@@ -45,9 +45,9 @@ export default class Face {
         this.vertexIlluminationGouroud = {};
         for(let і = 0; і < vertices.length; і++) {
             for(let j = 0; j < this.listEdges.length; j++) {
-                if(this.listEdges[j].vertexInit === vertices[і] ) {
+                if(this.vertexEqual(this.listEdges[j].vertexInit, vertices[і]) ) {
                     this.listEdges[j].setInitIlumination(totalIlumination[і]);
-                } if(this.listEdges[j].vertexEnd === vertices[і] ) {
+                } if(this.vertexEqual(this.listEdges[j].vertexEnd, vertices[і]) ) {
                     this.listEdges[j].setEndIlumination(totalIlumination[і]);
                 }
 

@@ -15,10 +15,16 @@ export default class Camera {
         console.log("produtosEscalarV: ", produtoEscalarV);
 
         this.v = subtrairVetores(y,  multiplicarValores(produtoEscalarV, this.nNormalized));
+
         this.vNormalized = normalizarVetor(this.v);
 
+        
+
+
         this.u = produtoVetorial( this.v, this.n);
+
         this.uNormalized = normalizarVetor(this.u);
+        
 
         console.log("n", this.n);
         console.log("normalized", this.nNormalized);
