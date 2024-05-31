@@ -1,11 +1,14 @@
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* Alinha os itens no topo */
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Alinha os itens no topo */
+  margin: 0; /* Remove margens padrão */
 }
 
 canvas {
+    margin-top: 10px;
+    margin-left: 10px;
     border: 1px solid #000;
     margin-right: 10px; /* Adiciona margem à direita do canvas */
     background-color: #8c92ac;
@@ -19,80 +22,69 @@ button {
   cursor: pointer;
 }
 
-#controls {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
+
+
+.dark-mode {
+  background-color: #151626; /* Cor de fundo escura */
+  color: #ffffff; /* Cor do texto clara */
 }
 
-#triangleTableContainer {
-    align-items: flex-start;
-    background-color: #8c92ac;
-    overflow-y: auto; /* Adiciona scrollbar vertical quando necessário */
-    border: 1px solid #000;
-    width: 400px; /* Define uma largura fixa para a tabela */
-    height: 600px; /* Define uma altura fixa para a tabela */
-    margin-bottom: 10px; /* Adiciona margem inferior à tabela */
-  }
-  #triangleTable {
-    width: 100%; /* Largura agora é 100% do contêiner */
-  }
-/* Estilo para o modo noturno */
-body.dark-mode {
-  background-color: #121212;
-  color: white;
-}
 .navbar {
-  overflow: hidden;
+  background-color: #333; /* Cor de fundo da navbar */
+  padding: 10px; /* Adiciona espaçamento interno */
+}
+
+.option {
+  margin-bottom: 10px; /* Adiciona espaçamento inferior entre opções */
+}
+
+.option span {
+  margin-right: 10px; /* Adiciona espaçamento à direita do texto */
+}
+
+.option input[type="number"] {
+  width: 60px; /* Define uma largura para os inputs numéricos */
+}
+
+.option > div {
+  margin-top: 5px; /* Adiciona espaçamento superior entre elementos */
+}
+
+.option > div > span {
+  margin-right: 5px; /* Adiciona espaçamento à direita do texto dentro de divs aninhadas */
+}
+.option > div > input[type="number"] {
+  width: 50px; /* Define uma largura para os inputs numéricos dentro de divs aninhadas */
+}
+
+.option > div > label {
+  margin-right: 10px; /* Adiciona espaçamento à direita das labels dentro de divs aninhadas */
+}
+
+#createScreenButton, #wireframeButton, #shadingButton, #resetCanvasButton {
+  position: fixed;
+  bottom: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
   background-color: #333;
-}
-.navbar a {
-  float: left;
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-.dropdown {
-  float: left;
-  overflow: hidden;
-}
-.dropdown .dropbtn {
-  font-size: 16px;  
+  color: #fff;
   border: none;
-  outline: none;
-  color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 999;
 }
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+
+#createScreenButton {
+  left: calc(50% - 500px); /* Ajuste para posicionar à esquerda */
 }
-.dropdown-content a, .dropdown-content div {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
+#resetCanvasButton {
+  left: calc(50% - 250px);
 }
-.dropdown-content div {
-  padding: 12px;
+
+#wireframeButton {
+  left: calc(50% + 250px); /* Ajuste para posicionar à esquerda */
 }
-.dropdown-content div input {
-  width: 100%;
-}
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-.dropdown-content a:hover {
-  background-color: #ddd;
+
+#shadingButton {
+  left: calc(50% + 500px); /* Ajuste para posicionar à esquerda */
 }
