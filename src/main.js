@@ -128,6 +128,7 @@ resetCanvasButton.addEventListener('click', function() {
     createScreenButton.disabled = false;
     polyList = [];
     vertexList = [];	
+    solidList = [];
     wireframeOK = false;
     shading = false;
 });
@@ -195,7 +196,10 @@ wireframeButton.addEventListener('click', function() {
     let camera = [parseFloat(cameraX), parseFloat(cameraY), parseFloat(cameraZ)]; // [cameraX, cameraY, cameraZ];
     let focalPoint = [parseFloat(focalPointX), parseFloat(focalPointY), parseFloat(focalPointZ)]; // [focalPointX, focalPointY, focalPointZ];
     wireframeOK = true;
-    wireframeTeste(polyList, viewportXValueMax, viewportYValueMax, selectedRotationAxis, slices, camera, focalPoint, selectedVision);
+    for(let i = 0; i < polyList.length; i++){
+        
+        wireframeTeste(polyList[i], viewportXValueMax, viewportYValueMax, selectedRotationAxis, slices, camera, focalPoint, selectedVision);
+    }
 })
 
 shadingButton.addEventListener('click', function() {
@@ -337,6 +341,35 @@ translateButton.addEventListener("click", () => {
         solidTeste.translateSolid(parseFloat(translateX), parseFloat(translateY), parseFloat(translateZ));
     }
 })
+const rotateX = document.getElementById("rotateX");
+
+rotateX.addEventListener("click", () => {
+    if(shading == false) {
+        alert("Selecione uma iluminação");
+        return;
+    }
+
+    canvasContext2D.clearRect(0, 0, canva2D.width, canva2D.height);
+    for(let i = 0; i < solidList.length; i++){
+        let solidTeste = solidList[i];
+        solidTeste.rotateX(15*(Math.PI/180));
+    }
+})
+
+const rotateXMinus = document.getElementById("rotateXMinus");
+
+rotateXMinus.addEventListener("click", () => {
+    if(shading == false) {
+        alert("Selecione uma iluminação");
+        return;
+    }
+
+    canvasContext2D.clearRect(0, 0, canva2D.width, canva2D.height);
+    for(let i = 0; i < solidList.length; i++){
+        let solidTeste = solidList[i];
+        solidTeste.rotateX(-(15*(Math.PI/180)));
+    }
+})
 
 
 
@@ -352,8 +385,8 @@ let polyEx = new Poly("exemplo", vertexList);
 
 vertexList = [];
 function wireframeTeste(polyList, viewportX, viewportY, eixoRotacao, slices, camera, focalPoint, selectedVision){
-    for(let i = 0; i < polyList.length; i++){
-        let polyTeste = polyList[i];
+    // for(let i = 0; i < polyList.length; i++){
+        let polyTeste = polyList;
         let polyListTeste = [];	
         polyListTeste.push(polyTeste);
         let solid3D = new Solid(polyListTeste[0].id, polyListTeste);
@@ -388,7 +421,7 @@ function wireframeTeste(polyList, viewportX, viewportY, eixoRotacao, slices, cam
         // canvasContext2D.clearRect(0, 0, canvasWidth, canvasHeight);
         solid3D.calcWireframe(slices, eixoRotacao, canvasContext2D, sruX, sruY, windowX, windowY, camera, focalPoint, selectedVision);
         solidList.push(solid3D);
-    }
+    
 
 
 }

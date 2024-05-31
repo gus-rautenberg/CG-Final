@@ -2,7 +2,7 @@ import Poly  from "./Poly.js";
 import Vertex from "./Vertex.js";
 import { getMJP, getInvertedMJP } from "./Scene.js";
 import { getParallelMatrix, getPerspectiveMatrix } from "./ProjectionMatrix.js";
-import { multiplyMatrices, matrixMultiplicationPoints, translateMatrix3D } from "./Matrix.js";
+import { multiplyMatrices, matrixMultiplicationPoints, translateMatrix3D, xRotationMatrix3D, yRotationMatrix3D, zRotationMatrix3D} from "./Matrix.js";
 import Camera, { normalizarVetor, produtoEscalar } from "./Camera.js";
 import Edge from "./Edge.js";
 import Face from "./Face.js";
@@ -37,6 +37,30 @@ export default class Solid {
     getMaterial() {
         return this.material;
     }
+
+    rotateX(teta) {
+        let tranlateMatrix;
+        console.log("rotate Teta: ", teta);
+        for (let i = 0; i < this.sliceList.length; i++) {
+            for(let k = 0; k < this.sliceList[i].vertexList.length; k++) {
+                let originToNormal = translateMatrix3D(-this.sliceList[i].vertexList[k].x, -this.sliceList[i].vertexList[k].y, -this.sliceList[i].vertexList[k].z);
+                let rotateXMatrix = xRotationMatrix3D(teta);
+                let normalToOrigin = translateMatrix3D(this.sliceList[i].vertexList[k].x, this.sliceList[i].vertexList[k].y, this.sliceList[i].vertexList[k].z);
+                let auxMatrix = multiplyMatrices(originToNormal, rotateXMatrix);
+                auxMatrix = multiplyMatrices(auxMatrix, normalToOrigin);
+                this.sliceList[i].vertexList[k].x = auxMatrix[0][0];
+                this.sliceList[i].vertexList[k].y = auxMatrix[1][0];
+                this.sliceList[i].vertexList[k].z = auxMatrix[2][0];
+                console.log("auxMatrix rotate: ", auxMatrix);
+            }
+            
+        }
+        this.wireFrameAgain(this.sliceList);
+        this.shading2();
+
+    }
+
+    
 
     translateSolid(x, y, z) {
         console.log("entrou aqui transladar")
@@ -573,7 +597,7 @@ export default class Solid {
         
 
 
-        if(type === "constante") {
+        if(this.type === "constante") {
             for(let i = 0; i < this.newVisibleFaceList.length; i++){
                 let material = this.getMaterial();
                 let constantShade = new ConstantShade(this.iA, this.L, this.newVisibleFaceList[i], this.camera, this.material);
@@ -584,7 +608,7 @@ export default class Solid {
             }
 
         }
-        else if(type === "gouraud") {
+        else if(this.type === "gouraud") {
             for(let i = 0; i < this.newVisibleFaceList.length; i++){
                 let material = this.getMaterial();
 
@@ -595,7 +619,7 @@ export default class Solid {
     
             }
         }
-        else if(type === "phong") {
+        else if(this.type === "phong") {
             for(let i = 0; i < this.newVisibleFaceList.length; i++){
                 let material = this.getMaterial();
 
@@ -608,11 +632,11 @@ export default class Solid {
             }
         }
 
-        for (let currentY = windowY.min; currentY < windowY.max; currentY++) {
-            for(let currentX = windowX.min; currentX < windowX.max; currentX++) {
+        for (let currentY = this.windowY.min; currentY < this.windowY.max; currentY++) {
+            for(let currentX = this.windowX.min; currentX < this.windowX.max; currentX++) {
                 if (zBufferFrame[currentY][currentX] != null) {
-                    ctx.fillStyle = zBufferFrame[currentY][currentX].color;
-                    ctx.fillRect(currentX, currentY, 1, 1);
+                    this.ctx.fillStyle = zBufferFrame[currentY][currentX].color;
+                    this.ctx.fillRect(currentX, currentY, 1, 1);
                 }
             }
         }
